@@ -13,10 +13,12 @@
 {
    CLLocationCoordinate2D location;
    NSInteger offset;
+   NSInteger hour;
 }
 
 @property (nonatomic, assign) CLLocationCoordinate2D location;
 @property (nonatomic, assign) NSInteger offset;
+@property (nonatomic, assign) NSInteger hour;
 
 - (void) update:(MKMapView *)mapView forView:(UIView *)view;
 

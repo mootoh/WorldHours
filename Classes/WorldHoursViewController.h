@@ -12,10 +12,10 @@
 @interface VerticalView : UIView
 @end
 
-@interface WorldHoursViewController : UIViewController <MKMapViewDelegate>
+@interface WorldHoursViewController : UIViewController <MKMapViewDelegate, UIGestureRecognizerDelegate>
 {
    IBOutlet MKMapView *theMapView;
-   NSMutableSet *hourViews;
+   NSMutableArray *hourViews;
    NSArray *colors;
 }
 

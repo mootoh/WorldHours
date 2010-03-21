@@ -9,6 +9,108 @@
 #import "WorldHoursViewController.h"
 #import "HourView.h"
 
+@interface WHTimeAnnotation : NSObject <MKAnnotation>
+{
+   CLLocationCoordinate2D coordinate;
+   NSXMLParser *parser;
+   BOOL parsing;
+   NSString *timezoneId;
+}
+
+@property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
+@property (nonatomic, retain) NSString *timezoneId;
+
+- (id) initWithCoordinate:(CLLocationCoordinate2D) coord;
+
+@end
+
+@implementation WHTimeAnnotation
+@synthesize coordinate;
+@synthesize timezoneId;
+
+// thanks to http://www.geonames.org/export/web-services.html#timezone
+#define kTimeZoneWebServiceURL @"http://ws.geonames.org/timezone?"
+
+- (id) initWithCoordinate:(CLLocationCoordinate2D) coord
+{
+   if (self = [super init]) {
+      coordinate = coord;
+      parsing = NO;
+      timezoneId = @"";
+      NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@lat=%f&lng=%f",
+                                         kTimeZoneWebServiceURL, coord.latitude, coord.longitude]];
+      parser = [[NSXMLParser alloc] initWithContentsOfURL:url];
+      parser.delegate = self;
+      [parser parse];
+   }
+   return self;
+}
+
+- (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qualifiedName attributes:(NSDictionary *)attributeDict
+{
+   if ([elementName isEqualToString:@"timezoneId"])
+      parsing = YES;
+}
+
+- (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName
+{
+   if ([elementName isEqualToString:@"timezoneId"])
+      parsing = NO;
+}
+
+- (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string
+{
+   if (parsing)
+      self.timezoneId = [timezoneId stringByAppendingString:string];
+}
+
+- (NSString *)title
+{
+   return timezoneId;
+}
+
+- (NSString *) subtitle
+{
+   NSCalendar *calendar = [NSCalendar currentCalendar];
+   NSTimeZone *gmtTimeZone = [NSTimeZone timeZoneWithName:timezoneId];
+   [calendar setTimeZone:gmtTimeZone];
+   
+   NSDateComponents *compo = [calendar components:NSHourCalendarUnit|NSMinuteCalendarUnit fromDate:[NSDate date]];
+   NSInteger hour = [compo hour];
+   NSInteger min = [compo minute];
+   return [NSString stringWithFormat:@"%02d:%02d", hour, min];
+}
+
+- (void) dealloc
+{
+   [parser release];
+   [super dealloc];
+}
+
+@end
+
+@interface WHTimeAnnotationView : MKAnnotationView
+@end
+
+@implementation WHTimeAnnotationView
+
+- (void) drawRect:(CGRect) rect
+{
+   CGContextRef context = UIGraphicsGetCurrentContext();
+   CGColorRef color = [[UIColor blueColor] CGColor];
+   CGContextSetStrokeColorWithColor(context, color);
+   
+   CGFloat lineWidth = rect.size.width*2;
+   CGContextSetLineWidth(context, lineWidth);
+   
+   CGContextMoveToPoint(context, 0.0f, 0.0f);
+   CGContextAddLineToPoint(context, 0.0f, rect.size.height);
+   CGContextStrokePath(context);   
+}
+
+@end
+
+
 @implementation VerticalView
 
 - (void) drawRect:(CGRect)rect
@@ -36,12 +138,12 @@
    NSTimeZone *gmtTimeZone = [NSTimeZone timeZoneWithName:@"GMT"];
    [calendar setTimeZone:gmtTimeZone];
    NSInteger hour = [[calendar components:NSHourCalendarUnit fromDate:[NSDate date]] hour];
- 
+
    for (int i=0; i<24; i++) {
       HourView *hv = [[HourView alloc] initWithFrame:CGRectZero];
-      hv.backgroundColor = [colors objectAtIndex:(hour+i)%24];
       CLLocationCoordinate2D loc = {0.0, (i < 12 ? 0.0 : -180.0) + 15.0 * (i < 12 ? i : i-12)};
       hv.location = loc;
+      hv.hour = (hour + i) % 24;
       [hv update:theMapView forView:self.view];
       [self.view addSubview:hv];
       [hourViews addObject:hv];
@@ -53,41 +155,21 @@
 - (void)viewDidLoad
 {
    [super viewDidLoad];
-   
-   colors = [NSArray arrayWithObjects:
-             [UIColor colorWithRed:0.20 green:0.20 blue:0.20 alpha:0.5], // AM 0
-             [UIColor colorWithRed:0.25 green:0.25 blue:0.25 alpha:0.5],
-             [UIColor colorWithRed:0.30 green:0.30 blue:0.30 alpha:0.5],
-             [UIColor colorWithRed:0.35 green:0.35 blue:0.35 alpha:0.5],
-             [UIColor colorWithRed:0.40 green:0.40 blue:0.40 alpha:0.5],
-             [UIColor colorWithRed:0.45 green:0.45 blue:0.45 alpha:0.5], // AM 5
-             [UIColor colorWithRed:0.50 green:0.50 blue:0.50 alpha:0.4],
-             [UIColor colorWithRed:0.55 green:0.55 blue:0.55 alpha:0.4],
-             [UIColor colorWithRed:0.60 green:0.60 blue:0.60 alpha:0.3], // AM 8
-             [UIColor colorWithRed:0.65 green:0.65 blue:0.65 alpha:0.3],
-
-             [UIColor colorWithRed:0.70 green:0.70 blue:0.70 alpha:0.2],
-             [UIColor colorWithRed:0.75 green:0.75 blue:0.75 alpha:0.2],
-             [UIColor colorWithRed:0.80 green:0.80 blue:0.80 alpha:0.1], // noon
-             [UIColor colorWithRed:0.90 green:0.85 blue:0.85 alpha:0.4],
-             [UIColor colorWithRed:1.00 green:1.00 blue:1.00 alpha:0.5], // PM 2
-             [UIColor colorWithRed:0.85 green:0.85 blue:0.85 alpha:0.4],
-             [UIColor colorWithRed:0.80 green:0.80 blue:0.80 alpha:0.2],
-             [UIColor colorWithRed:0.70 green:0.70 blue:0.70 alpha:0.3],
-             [UIColor colorWithRed:0.50 green:0.50 blue:0.50 alpha:0.3], // PM 6
-             [UIColor colorWithRed:0.45 green:0.45 blue:0.45 alpha:0.4],
-
-             [UIColor colorWithRed:0.40 green:0.40 blue:0.40 alpha:0.4],
-             [UIColor colorWithRed:0.35 green:0.35 blue:0.35 alpha:0.5],
-             [UIColor colorWithRed:0.30 green:0.30 blue:0.30 alpha:0.5],
-             [UIColor colorWithRed:0.25 green:0.25 blue:0.25 alpha:0.5],
-             nil];
-   [colors retain];
-
    hourViews = [[NSMutableSet alloc] init];
 
    MKCoordinateRegion nextCenter = {{40, 0}, {150, 360}};
    theMapView.region = nextCenter;
+   
+   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tapped:) name:@"tapped" object:nil];
+   
+   UITapGestureRecognizer *tapGR = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)];
+   [theMapView addGestureRecognizer:tapGR];
+   tapGR.delegate = self;
+   [tapGR release];
+   
+   NSLog(@"%@", [NSTimeZone knownTimeZoneNames]);
+   NSLog(@"%@", [NSTimeZone abbreviationDictionary]);
+
 }
 
 - (void) viewDidAppear:(BOOL)animated
@@ -111,19 +193,37 @@
    [super dealloc];
 }
 
+- (void) tapped:(NSNotification *)notification
+{
+   CGPoint point = [[[notification userInfo] objectForKey:@"point"] CGPointValue];
+   CLLocationCoordinate2D coord = [theMapView convertPoint:point toCoordinateFromView:self.view];
+   NSLog(@"coord = %f, %f", coord.latitude, coord.longitude);
+   WHTimeAnnotation *annotation = [[WHTimeAnnotation alloc] initWithCoordinate:coord];
+//   [theMapView addAnnotation:annotation];
+   NSLog(@"annotation count = %d", [[theMapView annotations] count]);
+   [annotation release];
+}
+
+#pragma mark MapViewDelegate
+
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated
 {
-//   MKCoordinateRegion region = mapView.region;
-//   NSLog(@"region changed to: (%f, %f), %f, %f", region.center.latitude, region.center.longitude, region.span.latitudeDelta, region.span.longitudeDelta);
-//   CGRect rect = [mapView convertRegion:region toRectToView:self.view];
-//   NSLog(@"rect = (%f, %f), (%f, %f)", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
-//   CGRect rectInMap = [mapView convertRegion:region toRectToView:mapView];
-//   NSLog(@"rectInMap = (%f, %f), (%f, %f)", rectInMap.origin.x, rectInMap.origin.y, rectInMap.size.width, rectInMap.size.height);
-   
    [UIView beginAnimations:@"hourViews" context:nil];
    for (HourView *hv in hourViews)
       [hv update:mapView forView:self.view];
    [UIView commitAnimations];
+}
+
+- (void) handleGesture:(UITapGestureRecognizer *)recognizer
+{
+   NSLog(@"handleGesture");
+   CGPoint point = [recognizer locationInView:theMapView];
+   CLLocationCoordinate2D coord = [theMapView convertPoint:point toCoordinateFromView:self.view];
+   NSLog(@"coord = %f, %f", coord.latitude, coord.longitude);
+   WHTimeAnnotation *annotation = [[WHTimeAnnotation alloc] initWithCoordinate:coord];
+   [theMapView addAnnotation:annotation];
+   NSLog(@"annotation count = %d", [[theMapView annotations] count]);
+   [annotation release];   
 }
 
 @end
