@@ -9,9 +9,14 @@
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
 
+
+@interface VerticalView : UIView
+@end
+
 @interface WorldHoursViewController : UIViewController <MKMapViewDelegate>
 {
-   IBOutlet MKMapView *mapView;
+   IBOutlet MKMapView *theMapView;
+   NSMutableSet *hourViews;
 }
 
 @end
