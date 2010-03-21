@@ -48,22 +48,12 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad
 {
-   MKCoordinateRegion nextCenter = {{40, 0}, {150, 360}};
-   theMapView.region = nextCenter;
+   [super viewDidLoad];
 
    hourViews = [[NSMutableSet alloc] init];
-/*
-   for (int i=0; i<24; i++) {
-      UIView *v = [[UIView alloc] initWithFrame:CGRectMake(i*self.view.frame.size.height/24.0f, 0, self.view.frame.size.height/24, self.view.frame.size.width)];
-      CGFloat colorFactor = (CGFloat)i / 24.0f;
-      v.backgroundColor = [UIColor colorWithRed:colorFactor green:colorFactor blue:colorFactor alpha:0.7];
-      [theMapView addSubview:v];
-      [v release];
-   }
-*/
-   NSLog(@"center = %f, %f, %f, %f", theMapView.region.center.latitude, theMapView.region.center.longitude, theMapView.region.span.latitudeDelta, theMapView.region.span.longitudeDelta);
 
-   [super viewDidLoad];
+   MKCoordinateRegion nextCenter = {{40, 0}, {150, 360}};
+   theMapView.region = nextCenter;
 }
 
 - (void) viewDidAppear:(BOOL)animated
@@ -71,27 +61,20 @@
    [self performSelector:@selector(showHours) withObject:nil afterDelay:0.1f];
 }
 
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    return YES;
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+   return YES;
 }
 
-- (void)didReceiveMemoryWarning {
-	// Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-	
-	// Release any cached data, images, etc that aren't in use.
+- (void)didReceiveMemoryWarning
+{
+   [super didReceiveMemoryWarning];
 }
 
-- (void)viewDidUnload {
-	// Release any retained subviews of the main view.
-	// e.g. self.myOutlet = nil;
-}
-
-
-- (void)dealloc {
+- (void)dealloc
+{
    [hourViews release];
-    [super dealloc];
+   [super dealloc];
 }
 
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated
