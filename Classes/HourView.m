@@ -23,7 +23,7 @@
 {
    CLLocationCoordinate2D center = {
       0,
-      location.longitude};// + 15.0/2.0};
+      location.longitude + 15.0/2.0};
    NSLog(@"center = %f, %f", center.latitude, center.longitude);
    MKCoordinateRegion region = {center, {179.9, 15.0}};
    CGRect rect = [mapView convertRegion:region toRectToView:mapView];

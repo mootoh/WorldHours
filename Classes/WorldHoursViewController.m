@@ -48,7 +48,9 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad
 {
-   [super viewDidLoad];
+   MKCoordinateRegion nextCenter = {{40, 0}, {150, 360}};
+   theMapView.region = nextCenter;
+
    hourViews = [[NSMutableSet alloc] init];
 /*
    for (int i=0; i<24; i++) {
@@ -60,11 +62,13 @@
    }
 */
    NSLog(@"center = %f, %f, %f, %f", theMapView.region.center.latitude, theMapView.region.center.longitude, theMapView.region.span.latitudeDelta, theMapView.region.span.longitudeDelta);
-   
-   MKCoordinateRegion nextCenter = {{40, 0}, {150, 360}};
-   theMapView.region = nextCenter;
 
-   [self showHours];
+   [super viewDidLoad];
+}
+
+- (void) viewDidAppear:(BOOL)animated
+{
+   [self performSelector:@selector(showHours) withObject:nil afterDelay:0.1f];
 }
 
 // Override to allow orientations other than the default portrait orientation.
