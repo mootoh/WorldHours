@@ -79,12 +79,12 @@
 
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated
 {
-   MKCoordinateRegion region = mapView.region;
-   NSLog(@"region changed to: (%f, %f), %f, %f", region.center.latitude, region.center.longitude, region.span.latitudeDelta, region.span.longitudeDelta);
-   CGRect rect = [mapView convertRegion:region toRectToView:self.view];
-   NSLog(@"rect = (%f, %f), (%f, %f)", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
-   CGRect rectInMap = [mapView convertRegion:region toRectToView:mapView];
-   NSLog(@"rectInMap = (%f, %f), (%f, %f)", rectInMap.origin.x, rectInMap.origin.y, rectInMap.size.width, rectInMap.size.height);
+//   MKCoordinateRegion region = mapView.region;
+//   NSLog(@"region changed to: (%f, %f), %f, %f", region.center.latitude, region.center.longitude, region.span.latitudeDelta, region.span.longitudeDelta);
+//   CGRect rect = [mapView convertRegion:region toRectToView:self.view];
+//   NSLog(@"rect = (%f, %f), (%f, %f)", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+//   CGRect rectInMap = [mapView convertRegion:region toRectToView:mapView];
+//   NSLog(@"rectInMap = (%f, %f), (%f, %f)", rectInMap.origin.x, rectInMap.origin.y, rectInMap.size.width, rectInMap.size.height);
    
    [UIView beginAnimations:@"hourViews" context:nil];
    for (HourView *hv in hourViews)
