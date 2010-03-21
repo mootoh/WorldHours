@@ -12,9 +12,11 @@
 @interface HourView : UIView
 {
    CLLocationCoordinate2D location;
+   NSInteger offset;
 }
 
 @property (nonatomic, assign) CLLocationCoordinate2D location;
+@property (nonatomic, assign) NSInteger offset;
 
 - (void) update:(MKMapView *)mapView forView:(UIView *)view;
 

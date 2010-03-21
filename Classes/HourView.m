@@ -10,6 +10,7 @@
 
 @implementation HourView
 @synthesize location;
+@synthesize offset;
 
 - (id)initWithFrame:(CGRect)frame
 {

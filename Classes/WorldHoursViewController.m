@@ -31,29 +31,21 @@
 @implementation WorldHoursViewController
 
 - (void) showHours
-{
-   for (int i=0; i<12; i++) {
+{   
+   NSCalendar *calendar = [NSCalendar currentCalendar];
+   NSTimeZone *gmtTimeZone = [NSTimeZone timeZoneWithName:@"GMT"];
+   [calendar setTimeZone:gmtTimeZone];
+   NSInteger hour = [[calendar components:NSHourCalendarUnit fromDate:[NSDate date]] hour];
+ 
+   for (int i=0; i<24; i++) {
       HourView *hv = [[HourView alloc] initWithFrame:CGRectZero];
-      CGFloat colorFactor = (CGFloat)i / 24.0f;
-      hv.backgroundColor = [UIColor colorWithRed:colorFactor green:colorFactor blue:colorFactor alpha:0.7];
-      CLLocationCoordinate2D loc = {0.0, 15.0 * i};
+      hv.backgroundColor = [colors objectAtIndex:(hour+i)%24];
+      CLLocationCoordinate2D loc = {0.0, (i < 12 ? 0.0 : -180.0) + 15.0 * (i < 12 ? i : i-12)};
       hv.location = loc;
       [hv update:theMapView forView:self.view];
       [self.view addSubview:hv];
       [hourViews addObject:hv];
       [hv release];   
-   }
-
-   for (int i=1; i<=12; i++) {
-      HourView *hv = [[HourView alloc] initWithFrame:CGRectZero];
-      CGFloat colorFactor = (CGFloat)i / 24.0f;
-      hv.backgroundColor = [UIColor colorWithRed:colorFactor green:colorFactor blue:colorFactor alpha:0.7];
-      CLLocationCoordinate2D loc = {0.0, -15.0 * i};
-      hv.location = loc;
-      [hv update:theMapView forView:self.view];
-      [self.view addSubview:hv];
-      [hourViews addObject:hv];
-      [hv release];
    }
 }
 
@@ -61,6 +53,36 @@
 - (void)viewDidLoad
 {
    [super viewDidLoad];
+   
+   colors = [NSArray arrayWithObjects:
+             [UIColor colorWithRed:0.20 green:0.20 blue:0.20 alpha:0.5], // AM 0
+             [UIColor colorWithRed:0.25 green:0.25 blue:0.25 alpha:0.5],
+             [UIColor colorWithRed:0.30 green:0.30 blue:0.30 alpha:0.5],
+             [UIColor colorWithRed:0.35 green:0.35 blue:0.35 alpha:0.5],
+             [UIColor colorWithRed:0.40 green:0.40 blue:0.40 alpha:0.5],
+             [UIColor colorWithRed:0.45 green:0.45 blue:0.45 alpha:0.5], // AM 5
+             [UIColor colorWithRed:0.50 green:0.50 blue:0.50 alpha:0.4],
+             [UIColor colorWithRed:0.55 green:0.55 blue:0.55 alpha:0.4],
+             [UIColor colorWithRed:0.60 green:0.60 blue:0.60 alpha:0.3], // AM 8
+             [UIColor colorWithRed:0.65 green:0.65 blue:0.65 alpha:0.3],
+
+             [UIColor colorWithRed:0.70 green:0.70 blue:0.70 alpha:0.2],
+             [UIColor colorWithRed:0.75 green:0.75 blue:0.75 alpha:0.2],
+             [UIColor colorWithRed:0.80 green:0.80 blue:0.80 alpha:0.1], // noon
+             [UIColor colorWithRed:0.90 green:0.85 blue:0.85 alpha:0.4],
+             [UIColor colorWithRed:1.00 green:1.00 blue:1.00 alpha:0.5], // PM 2
+             [UIColor colorWithRed:0.85 green:0.85 blue:0.85 alpha:0.4],
+             [UIColor colorWithRed:0.80 green:0.80 blue:0.80 alpha:0.2],
+             [UIColor colorWithRed:0.70 green:0.70 blue:0.70 alpha:0.3],
+             [UIColor colorWithRed:0.50 green:0.50 blue:0.50 alpha:0.3], // PM 6
+             [UIColor colorWithRed:0.45 green:0.45 blue:0.45 alpha:0.4],
+
+             [UIColor colorWithRed:0.40 green:0.40 blue:0.40 alpha:0.4],
+             [UIColor colorWithRed:0.35 green:0.35 blue:0.35 alpha:0.5],
+             [UIColor colorWithRed:0.30 green:0.30 blue:0.30 alpha:0.5],
+             [UIColor colorWithRed:0.25 green:0.25 blue:0.25 alpha:0.5],
+             nil];
+   [colors retain];
 
    hourViews = [[NSMutableSet alloc] init];
 
