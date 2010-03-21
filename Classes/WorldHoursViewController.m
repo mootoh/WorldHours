@@ -43,6 +43,18 @@
       [hourViews addObject:hv];
       [hv release];   
    }
+
+   for (int i=1; i<=12; i++) {
+      HourView *hv = [[HourView alloc] initWithFrame:CGRectZero];
+      CGFloat colorFactor = (CGFloat)i / 24.0f;
+      hv.backgroundColor = [UIColor colorWithRed:colorFactor green:colorFactor blue:colorFactor alpha:0.7];
+      CLLocationCoordinate2D loc = {0.0, -15.0 * i};
+      hv.location = loc;
+      [hv update:theMapView forView:self.view];
+      [self.view addSubview:hv];
+      [hourViews addObject:hv];
+      [hv release];
+   }
 }
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
