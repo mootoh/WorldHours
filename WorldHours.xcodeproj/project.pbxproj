@@ -19,7 +19,6 @@
 		928D774911571BC600FC57B1 /* HourLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 928D774811571BC600FC57B1 /* HourLayer.m */; };
 		928D774F11571BEF00FC57B1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 928D774E11571BEF00FC57B1 /* QuartzCore.framework */; };
 		92A679C31155059400591E0E /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A679C21155059400591E0E /* MapKit.framework */; };
-		92A67ACF1155A78300591E0E /* HourView.m in Sources */ = {isa = PBXBuildFile; fileRef = 92A67ACE1155A78300591E0E /* HourView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,8 +41,6 @@
 		928D774811571BC600FC57B1 /* HourLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HourLayer.m; sourceTree = "<group>"; };
 		928D774E11571BEF00FC57B1 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		92A679C21155059400591E0E /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
-		92A67ACD1155A78300591E0E /* HourView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HourView.h; sourceTree = "<group>"; };
-		92A67ACE1155A78300591E0E /* HourView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HourView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,8 +66,6 @@
 				1D3623250D0F684500981E51 /* WorldHoursAppDelegate.m */,
 				28D7ACF60DDB3853001CB0EB /* WorldHoursViewController.h */,
 				28D7ACF70DDB3853001CB0EB /* WorldHoursViewController.m */,
-				92A67ACD1155A78300591E0E /* HourView.h */,
-				92A67ACE1155A78300591E0E /* HourView.m */,
 				928D76CF115714CF00FC57B1 /* WHTimeAnnotation.h */,
 				928D76D0115714CF00FC57B1 /* WHTimeAnnotation.m */,
 				928D774711571BC600FC57B1 /* HourLayer.h */,
@@ -187,7 +182,6 @@
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* WorldHoursAppDelegate.m in Sources */,
 				28D7ACF80DDB3853001CB0EB /* WorldHoursViewController.m in Sources */,
-				92A67ACF1155A78300591E0E /* HourView.m in Sources */,
 				928D76D1115714CF00FC57B1 /* WHTimeAnnotation.m in Sources */,
 				928D774911571BC600FC57B1 /* HourLayer.m in Sources */,
 			);
