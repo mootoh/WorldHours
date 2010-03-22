@@ -146,7 +146,8 @@ static NSArray *s_colors = nil;
    CGContextMoveToPoint(context, 0.0f, 0.0f);
    CGContextAddLineToPoint(context, 0.0f, rect.size.height);
    CGContextStrokePath(context);   
-   
+
+#ifdef SHOW_HOUR_TEXT
    if (hour % 3 == 0) {
       CGContextSetFillColorWithColor(context, [[UIColor whiteColor] CGColor]);
       CGContextSelectFont(context, "Helvetica", 14.0, kCGEncodingMacRoman);
@@ -154,6 +155,7 @@ static NSArray *s_colors = nil;
       CGContextSetTextMatrix(context, CGAffineTransformMakeScale(1.0, -1.0));
       CGContextShowTextAtPoint(context, 10.0, 14.0, [hourString UTF8String], [hourString lengthOfBytesUsingEncoding:NSUTF8StringEncoding]);
    }
+#endif // SHOW_HOUR_TEXT
 }
 
 @end

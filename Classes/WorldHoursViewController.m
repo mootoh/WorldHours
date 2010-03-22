@@ -73,7 +73,6 @@
 
 - (void) viewDidAppear:(BOOL)animated
 {
-//   [self performSelector:@selector(showHours) withObject:nil afterDelay:0.1f];
    [self performSelector:@selector(showHourLayers) withObject:nil afterDelay:0.1f];
 }
 
