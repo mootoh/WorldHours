@@ -64,17 +64,15 @@ static NSArray *s_colors = nil;
 - (void) update:(MKMapView *)mapView forView:(UIView *)view
 {
    CLLocationCoordinate2D center = {0, location.longitude + 15.0/2.0};
-//   NSLog(@"center = %f, %f", center.latitude, center.longitude);
-   MKCoordinateRegion region = {center, {179.9, 15.0}};
+   MKCoordinateRegion region = {center, {170.0, 14.9999999}};
    CGRect rect = [mapView convertRegion:region toRectToView:mapView];
+   NSLog(@"updating rect = %f, %f, %f, %f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
    self.frame = rect;
-//   NSLog(@"HV rect = (%f, %f), (%f, %f)", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
 }
 
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect
 {
+   NSLog(@"drawRect");
    CGContextRef context = UIGraphicsGetCurrentContext();
    CGColorRef color = [[[HourView colors] objectAtIndex:hour] CGColor];
    CGContextSetStrokeColorWithColor(context, color);
@@ -84,7 +82,13 @@ static NSArray *s_colors = nil;
    
    CGContextMoveToPoint(context, 0.0f, 0.0f);
    CGContextAddLineToPoint(context, 0.0f, rect.size.height);
-   CGContextStrokePath(context);
+   CGContextStrokePath(context);   
+
+   CGContextSetFillColorWithColor(context, [[UIColor blackColor] CGColor]);
+   NSLog(@"rect = %f, %f, %f, %f",
+         rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+   CGRect textRect = rect;
+   [[NSString stringWithFormat:@"%d", hour] drawInRect:textRect withFont:[UIFont systemFontOfSize:12]];   
 }
 
 - (void)dealloc
