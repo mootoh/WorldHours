@@ -21,6 +21,7 @@
 @property (nonatomic, retain) NSString *timezoneId;
 
 - (id) initWithCoordinate:(CLLocationCoordinate2D) coord;
+- (void) search;
 
 @end
 

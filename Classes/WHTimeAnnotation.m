@@ -25,9 +25,13 @@
                                          kTimeZoneWebServiceURL, coord.latitude, coord.longitude]];
       parser = [[NSXMLParser alloc] initWithContentsOfURL:url];
       parser.delegate = self;
-      [parser parse];
    }
    return self;
+}
+
+- (void) search
+{
+   [parser parse];
 }
 
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qualifiedName attributes:(NSDictionary *)attributeDict

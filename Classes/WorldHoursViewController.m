@@ -119,9 +119,11 @@
 
 - (void) parseFinished:(NSNotification *)notification
 {
-//   WHTimeAnnotation *annotation = [[notification userInfo] objectForKey:@"annotation"];
-//   [theMapView selectAnnotation:annotation animated:YES];
-//   NSLog(@"selected = %d", [[theMapView selectedAnnotations] count]);
+   WHTimeAnnotation *annotation = [[notification userInfo] objectForKey:@"annotation"];
+   if (![annotation.title isEqualToString:@""]) {
+      [theMapView addAnnotation:annotation];
+   }
+   [annotation release];
 }
 
 #pragma mark MapViewDelegate
@@ -180,9 +182,7 @@
    CLLocationCoordinate2D coord = [theMapView convertPoint:point toCoordinateFromView:self.view];
 //   NSLog(@"coord = %f, %f", coord.latitude, coord.longitude);
    WHTimeAnnotation *annotation = [[WHTimeAnnotation alloc] initWithCoordinate:coord];
-   [theMapView addAnnotation:annotation];
-//   NSLog(@"annotation count = %d", [[theMapView annotations] count]);
-   [annotation release];
+   [annotation search];
 }
 
 - (void) annotationTapped:(PinTappedRecognizer *)recognizer
