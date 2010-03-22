@@ -9,13 +9,9 @@
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
 
-@interface VerticalView : UIView
-@end
-
 @interface WorldHoursViewController : UIViewController <MKMapViewDelegate, UIGestureRecognizerDelegate>
 {
    IBOutlet MKMapView *theMapView;
-   NSMutableArray *hourViews;
    NSMutableArray *hourLayers;
    NSArray *colors;
 }

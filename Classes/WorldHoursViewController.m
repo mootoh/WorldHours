@@ -8,7 +8,6 @@
 
 #import <QuartzCore/QuartzCore.h>
 #import "WorldHoursViewController.h"
-#import "HourView.h"
 #import "HourLayer.h"
 #import "WHTimeAnnotation.h"
 
@@ -33,45 +32,7 @@
 
 @end
 
-@implementation VerticalView
-
-- (void) drawRect:(CGRect)rect
-{
-   CGContextRef context = UIGraphicsGetCurrentContext();
-   CGContextSetRGBStrokeColor(context, 0.0, 0.0, 0.0, 1.0);
-   
-   CGFloat lineWidth = 5.0f;
-   CGContextSetLineWidth(context, lineWidth);
-
-   for (int i=0; i<12; i++) {
-      CGContextMoveToPoint(context, i * 15.0f, 0.0f);
-      CGContextAddLineToPoint(context, i * 15.0f, rect.size.height);
-      CGContextStrokePath(context);
-   }
-}
-
-@end
-
 @implementation WorldHoursViewController
-
-- (void) showHours
-{   
-   NSCalendar *calendar = [NSCalendar currentCalendar];
-   NSTimeZone *gmtTimeZone = [NSTimeZone timeZoneWithName:@"GMT"];
-   [calendar setTimeZone:gmtTimeZone];
-   NSInteger hour = [[calendar components:NSHourCalendarUnit fromDate:[NSDate date]] hour];
-
-   for (int i=0; i<24; i++) {
-      HourView *hv = [[HourView alloc] initWithFrame:CGRectZero];
-      CLLocationCoordinate2D loc = {0.0, (i < 12 ? 0.0 : -180.0) + 15.0 * (i < 12 ? i : i-12)};
-      hv.location = loc;
-      hv.hour = (hour + i) % 24;
-      [hv update:theMapView forView:self.view];
-      [self.view addSubview:hv];
-      [hourViews addObject:hv];
-      [hv release];   
-   }
-}
 
 - (void) showHourLayers
 {
@@ -97,7 +58,6 @@
 - (void)viewDidLoad
 {
    [super viewDidLoad];
-   hourViews = [[NSMutableArray alloc] init];
    hourLayers = [[NSMutableArray alloc] init];
 
    MKCoordinateRegion nextCenter = {{40, 0}, {150, 360}};
@@ -130,7 +90,6 @@
 - (void)dealloc
 {
    [hourLayers release];
-   [hourViews release];
    [super dealloc];
 }
 
@@ -149,26 +108,12 @@
 
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated
 {
-   [UIView setAnimationDelay:3.0];
    [UIView beginAnimations:@"hourViews" context:nil];
-   [UIView setAnimationDelegate:self];
-   [UIView setAnimationDidStopSelector:@selector(animationDidStop:finished:context:)];
    
-   for (HourLayer *layer in hourLayers) {
-//      [layer setNeedsDisplay];
+   for (HourLayer *layer in hourLayers)
       [layer update:mapView forView:self.view];
-   }
 
-   for (HourView *hv in hourViews)
-      [hv update:mapView forView:self.view];
    [UIView commitAnimations];
-}
-
-- (void) animationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context
-{
-   NSLog(@"didstop");
-//   for (HourLayer *layer in hourLayers)
-//      [layer setNeedsDisplayInRect:self.view.frame];
 }
 
 - (void) handleGesture:(UITapGestureRecognizer *)recognizer
