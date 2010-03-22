@@ -6,8 +6,10 @@
 //  Copyright deadbeaf.org 2010. All rights reserved.
 //
 
+#import <QuartzCore/QuartzCore.h>
 #import "WorldHoursViewController.h"
 #import "HourView.h"
+#import "HourLayer.h"
 #import "WHTimeAnnotation.h"
 
 @interface WHTimeAnnotationView : MKAnnotationView
@@ -71,11 +73,32 @@
    }
 }
 
+- (void) showHourLayers
+{
+   NSCalendar *calendar = [NSCalendar currentCalendar];
+   NSTimeZone *gmtTimeZone = [NSTimeZone timeZoneWithName:@"GMT"];
+   [calendar setTimeZone:gmtTimeZone];
+   NSInteger hour = [[calendar components:NSHourCalendarUnit fromDate:[NSDate date]] hour];
+   
+   for (int i=0; i<24; i++) {
+      HourLayer *layer = [[HourLayer alloc] init];
+      CLLocationCoordinate2D loc = {0.0, (i < 12 ? 0.0 : -180.0) + 15.0 * (i < 12 ? i : i-12)};
+      layer.location = loc;
+      layer.hour = (hour + i) % 24;
+      [layer update:theMapView forView:self.view];
+      [theMapView.layer addSublayer:layer];
+      [hourLayers addObject:layer];
+      [layer setNeedsDisplay];
+      [layer release];
+   }
+}
+
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad
 {
    [super viewDidLoad];
    hourViews = [[NSMutableArray alloc] init];
+   hourLayers = [[NSMutableArray alloc] init];
 
    MKCoordinateRegion nextCenter = {{40, 0}, {150, 360}};
    theMapView.region = nextCenter;
@@ -86,15 +109,12 @@
    [theMapView addGestureRecognizer:tapGR];
    tapGR.delegate = self;
    [tapGR release];
-   
-   NSLog(@"%@", [NSTimeZone knownTimeZoneNames]);
-   NSLog(@"%@", [NSTimeZone abbreviationDictionary]);
-
 }
 
 - (void) viewDidAppear:(BOOL)animated
 {
-   [self performSelector:@selector(showHours) withObject:nil afterDelay:0.1f];
+//   [self performSelector:@selector(showHours) withObject:nil afterDelay:0.1f];
+   [self performSelector:@selector(showHourLayers) withObject:nil afterDelay:0.1f];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -109,6 +129,7 @@
 
 - (void)dealloc
 {
+   [hourLayers release];
    [hourViews release];
    [super dealloc];
 }
@@ -129,9 +150,17 @@
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated
 {
    [UIView beginAnimations:@"hourViews" context:nil];
+   for (HourLayer *layer in hourLayers) {
+//      [layer setNeedsDisplay];
+      [layer update:mapView forView:self.view];
+   }
+
    for (HourView *hv in hourViews)
       [hv update:mapView forView:self.view];
    [UIView commitAnimations];
+
+//   for (HourLayer *layer in hourLayers)
+//      [layer setNeedsDisplay];
 }
 
 - (void) handleGesture:(UITapGestureRecognizer *)recognizer

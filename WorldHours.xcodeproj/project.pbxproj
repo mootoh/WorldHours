@@ -16,6 +16,8 @@
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		28D7ACF80DDB3853001CB0EB /* WorldHoursViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* WorldHoursViewController.m */; };
 		928D76D1115714CF00FC57B1 /* WHTimeAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 928D76D0115714CF00FC57B1 /* WHTimeAnnotation.m */; };
+		928D774911571BC600FC57B1 /* HourLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 928D774811571BC600FC57B1 /* HourLayer.m */; };
+		928D774F11571BEF00FC57B1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 928D774E11571BEF00FC57B1 /* QuartzCore.framework */; };
 		92A679C31155059400591E0E /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A679C21155059400591E0E /* MapKit.framework */; };
 		92A67ACF1155A78300591E0E /* HourView.m in Sources */ = {isa = PBXBuildFile; fileRef = 92A67ACE1155A78300591E0E /* HourView.m */; };
 /* End PBXBuildFile section */
@@ -36,6 +38,9 @@
 		8D1107310486CEB800E47090 /* WorldHours-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "WorldHours-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		928D76CF115714CF00FC57B1 /* WHTimeAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WHTimeAnnotation.h; sourceTree = "<group>"; };
 		928D76D0115714CF00FC57B1 /* WHTimeAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHTimeAnnotation.m; sourceTree = "<group>"; };
+		928D774711571BC600FC57B1 /* HourLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HourLayer.h; sourceTree = "<group>"; };
+		928D774811571BC600FC57B1 /* HourLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HourLayer.m; sourceTree = "<group>"; };
+		928D774E11571BEF00FC57B1 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		92A679C21155059400591E0E /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		92A67ACD1155A78300591E0E /* HourView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HourView.h; sourceTree = "<group>"; };
 		92A67ACE1155A78300591E0E /* HourView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HourView.m; sourceTree = "<group>"; };
@@ -50,6 +55,7 @@
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */,
 				92A679C31155059400591E0E /* MapKit.framework in Frameworks */,
+				928D774F11571BEF00FC57B1 /* QuartzCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -67,6 +73,8 @@
 				92A67ACE1155A78300591E0E /* HourView.m */,
 				928D76CF115714CF00FC57B1 /* WHTimeAnnotation.h */,
 				928D76D0115714CF00FC57B1 /* WHTimeAnnotation.m */,
+				928D774711571BC600FC57B1 /* HourLayer.h */,
+				928D774811571BC600FC57B1 /* HourLayer.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -117,6 +125,7 @@
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				288765A40DF7441C002DB57D /* CoreGraphics.framework */,
 				92A679C21155059400591E0E /* MapKit.framework */,
+				928D774E11571BEF00FC57B1 /* QuartzCore.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -180,6 +189,7 @@
 				28D7ACF80DDB3853001CB0EB /* WorldHoursViewController.m in Sources */,
 				92A67ACF1155A78300591E0E /* HourView.m in Sources */,
 				928D76D1115714CF00FC57B1 /* WHTimeAnnotation.m in Sources */,
+				928D774911571BC600FC57B1 /* HourLayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

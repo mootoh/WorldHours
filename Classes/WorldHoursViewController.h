@@ -16,6 +16,7 @@
 {
    IBOutlet MKMapView *theMapView;
    NSMutableArray *hourViews;
+   NSMutableArray *hourLayers;
    NSArray *colors;
 }
 
