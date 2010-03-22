@@ -56,8 +56,13 @@ static NSArray *s_colors = nil;
 {
    CLLocationCoordinate2D center = {0, location.longitude + 15.0/2.0};
    MKCoordinateRegion region = {center, {179.9999, 14.9999999}};
+//   MKCoordinateRegion region = {center, mapView.region.span};
    CGRect rect = [mapView convertRegion:region toRectToView:mapView];
-
+   NSLog(@"rect before = %f, %f, %f, %f",
+         rect.origin.x,
+         rect.origin.y,
+         rect.size.width,
+         rect.size.height);
    // clipping
    CGFloat x = rect.origin.x, y = rect.origin.y, w = rect.size.width, h = rect.size.height;
    const CGFloat x0 = mapView.frame.origin.x, y0 = mapView.frame.origin.y;
@@ -68,12 +73,20 @@ static NSArray *s_colors = nil;
    if (x < x0) {
       if (x+w <= x0) {
          clipping = YES;
+         x = -1.0;
+         y = -1.0;
+         w = 0.1;
+         h = 0.1;
       } else {
          w = w + x;
          x = x0;
       }
    } else if (x >= xx) {
       clipping = YES;
+      x = -1.0;
+      y = -1.0;
+      w = 0.1;
+      h = 0.1;
    } else if (x      < xx &&
               x + w >= xx) {
       w = xx-x;
@@ -82,21 +95,42 @@ static NSArray *s_colors = nil;
    if (y < y0) {
       if (y+h <= y0) {
          clipping = YES;
+         x = -1.0;
+         y = -1.0;
+         w = 0.1;
+         h = 0.1;
       } else {
          h = h + y;
          y = y0;
       }
    } else if (y >= yy) {
       clipping = YES;
+      x = -1.0;
+      y = -1.0;
+      w = 0.1;
+      h = 0.1;
    } else if (y      < yy &&
               y + h >= yy) {
       h = yy-y;
    }
    
-   if (! clipping)
-      rect = CGRectMake(x, y, w, h);
+   if (w > mapView.frame.size.width)
+      w = mapView.frame.size.width;
+   if (h > mapView.frame.size.height)
+      h = mapView.frame.size.height;
+
+   rect = CGRectMake(x, y, w, h);
+
+   NSLog(@"rect after = %f, %f, %f, %f",
+         rect.origin.x,
+         rect.origin.y,
+         rect.size.width,
+         rect.size.height);
+   
    
    self.frame = rect;
+   if (! clipping)
+      [self setNeedsDisplay];
 }
 
 - (void)drawInContext:(CGContextRef)context
@@ -113,14 +147,13 @@ static NSArray *s_colors = nil;
    CGContextAddLineToPoint(context, 0.0f, rect.size.height);
    CGContextStrokePath(context);   
    
-   CGContextSetFillColorWithColor(context, [[UIColor whiteColor] CGColor]);
-//   NSLog(@"rect = %f, %f, %f, %f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
-//   CGRect textRect = rect;
-//   [[NSString stringWithFormat:@"%d", hour] drawInRect:textRect withFont:[UIFont systemFontOfSize:12]];   
-   CGContextSelectFont(context, "Helvetica", 14.0, kCGEncodingMacRoman);
-   NSString *hourString = [NSString stringWithFormat:@"%d", hour];
-	CGContextSetTextMatrix(context, CGAffineTransformMakeScale(1.0, -1.0));
-   CGContextShowTextAtPoint(context, 10.0, 14.0, [hourString UTF8String], [hourString lengthOfBytesUsingEncoding:NSUTF8StringEncoding]);
+   if (hour % 3 == 0) {
+      CGContextSetFillColorWithColor(context, [[UIColor whiteColor] CGColor]);
+      CGContextSelectFont(context, "Helvetica", 14.0, kCGEncodingMacRoman);
+      NSString *hourString = [NSString stringWithFormat:@"%d", hour];
+      CGContextSetTextMatrix(context, CGAffineTransformMakeScale(1.0, -1.0));
+      CGContextShowTextAtPoint(context, 10.0, 14.0, [hourString UTF8String], [hourString lengthOfBytesUsingEncoding:NSUTF8StringEncoding]);
+   }
 }
 
 @end

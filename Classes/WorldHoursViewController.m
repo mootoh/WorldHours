@@ -149,7 +149,11 @@
 
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated
 {
+   [UIView setAnimationDelay:3.0];
    [UIView beginAnimations:@"hourViews" context:nil];
+   [UIView setAnimationDelegate:self];
+   [UIView setAnimationDidStopSelector:@selector(animationDidStop:finished:context:)];
+   
    for (HourLayer *layer in hourLayers) {
 //      [layer setNeedsDisplay];
       [layer update:mapView forView:self.view];
@@ -158,9 +162,13 @@
    for (HourView *hv in hourViews)
       [hv update:mapView forView:self.view];
    [UIView commitAnimations];
+}
 
+- (void) animationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context
+{
+   NSLog(@"didstop");
 //   for (HourLayer *layer in hourLayers)
-//      [layer setNeedsDisplay];
+//      [layer setNeedsDisplayInRect:self.view.frame];
 }
 
 - (void) handleGesture:(UITapGestureRecognizer *)recognizer
