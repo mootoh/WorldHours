@@ -75,7 +75,7 @@
 - (void)viewDidLoad
 {
    [super viewDidLoad];
-   hourViews = [[NSMutableSet alloc] init];
+   hourViews = [[NSMutableArray alloc] init];
 
    MKCoordinateRegion nextCenter = {{40, 0}, {150, 360}};
    theMapView.region = nextCenter;
