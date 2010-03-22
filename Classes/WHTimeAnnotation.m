@@ -48,6 +48,11 @@
       self.timezoneId = [timezoneId stringByAppendingString:string];
 }
 
+- (void) parserDidEndDocument:(NSXMLParser *)parser
+{
+   [[NSNotificationCenter defaultCenter] postNotificationName:@"parseFinished" object:nil userInfo:[NSDictionary dictionaryWithObject:self forKey:@"annotation"]];
+}
+
 - (NSString *)title
 {
    return timezoneId;
