@@ -10,6 +10,8 @@
 #import "WorldHoursViewController.h"
 #import "HourLayer.h"
 #import "WHTimeAnnotation.h"
+#import "WHMoreViewController.h"
+#import "WorldHoursAppDelegate.h"
 
 @interface WHTimeAnnotationView : MKAnnotationView
 @end
@@ -94,6 +96,17 @@
    [theMapView addGestureRecognizer:tapGR];
    tapGR.delegate = self;
    [tapGR release];
+   
+   [segmentedControl addTarget:self action:@selector(modeSwitched) forControlEvents:UIControlEventValueChanged];
+
+   WorldHoursAppDelegate *appDelegate = (WorldHoursAppDelegate *)[UIApplication sharedApplication].delegate;
+   for (NSString *loc in appDelegate.locations) {
+      CGFloat lat, lon;
+      sscanf([loc UTF8String], "%f %f", &lat, &lon);
+      CLLocationCoordinate2D coord = {lat, lon};
+      WHTimeAnnotation *annotation = [[WHTimeAnnotation alloc] initWithCoordinate:coord];
+      [annotation search];
+   }
 }
 
 - (void) viewDidAppear:(BOOL)animated
@@ -124,6 +137,14 @@
       [theMapView addAnnotation:annotation];
    }
    [annotation release];
+}
+
+- (IBAction) showMore
+{
+   WHMoreViewController *vc = [[WHMoreViewController alloc] initWithNibName:@"WHMoreViewController" bundle:nil];
+   vc.modalPresentationStyle = UIModalPresentationFormSheet;
+   [self presentModalViewController:vc animated:YES];
+   
 }
 
 #pragma mark MapViewDelegate
@@ -171,7 +192,10 @@
 
 - (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views
 {
-   [theMapView selectAnnotation:[[theMapView annotations] lastObject] animated:YES];
+   id <MKAnnotation> annotation = [[theMapView annotations] lastObject];
+   [theMapView selectAnnotation:annotation animated:YES];
+   WorldHoursAppDelegate *appDelegate = (WorldHoursAppDelegate *)[UIApplication sharedApplication].delegate;
+   [appDelegate addLocation:annotation.coordinate];
 }
 
 #pragma mark UIGestureRecognizerDelegate
@@ -188,5 +212,16 @@
 - (void) annotationTapped:(PinTappedRecognizer *)recognizer
 {
    [theMapView removeAnnotation:recognizer.annotation];
+   WorldHoursAppDelegate *appDelegate = (WorldHoursAppDelegate *)[UIApplication sharedApplication].delegate;
+   [appDelegate removeLocation:recognizer.annotation.coordinate];
 }
+
+- (void) modeSwitched
+{
+   if (segmentedControl.selectedSegmentIndex == 0)
+      theMapView.mapType = MKMapTypeStandard;
+   else
+      theMapView.mapType = MKMapTypeSatellite;
+}
+
 @end

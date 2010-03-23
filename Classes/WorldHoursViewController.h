@@ -13,6 +13,9 @@
 {
    IBOutlet MKMapView *theMapView;
    NSMutableArray *hourLayers;
+   IBOutlet UISegmentedControl *segmentedControl;
 }
+
+- (IBAction) showMore;
 
 @end

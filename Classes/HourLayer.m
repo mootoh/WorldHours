@@ -138,7 +138,7 @@ static NSArray *s_colors = nil;
    CGContextAddLineToPoint(context, 0.0f, rect.size.height);
    CGContextStrokePath(context);   
 
-#ifdef SHOW_HOUR_TEXT
+#ifndef SHOW_HOUR_TEXT
    if (hour % 3 == 0) {
       CGContextSetFillColorWithColor(context, [[UIColor whiteColor] CGColor]);
       CGContextSelectFont(context, "Helvetica", 14.0, kCGEncodingMacRoman);

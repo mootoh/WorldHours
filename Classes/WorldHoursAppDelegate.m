@@ -13,23 +13,43 @@
 
 @synthesize window;
 @synthesize viewController;
+@synthesize locations;
 
-
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
-    
-    // Override point for customization after app launch    
-    [window addSubview:viewController.view];
-    [window makeKeyAndVisible];
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+   self.locations = [NSMutableSet setWithArray:[[NSUserDefaults standardUserDefaults] arrayForKey:@"locations"]];
+   [window addSubview:viewController.view];
+   [window makeKeyAndVisible];
 
 	return YES;
 }
 
-
-- (void)dealloc {
-    [viewController release];
-    [window release];
-    [super dealloc];
+- (void) applicationWillTerminate:(UIApplication *)application
+{
+   // write back the annotations
+   [[NSUserDefaults standardUserDefaults] setObject:[locations allObjects] forKey:@"locations"];
 }
 
+- (void)dealloc
+{
+   [locations release];
+   [viewController release];
+   [window release];
+   [super dealloc];
+}
+
+- (void) addLocation:(CLLocationCoordinate2D)location
+{
+   NSString *locationString = [NSString stringWithFormat:@"%f %f",
+                               location.latitude, location.longitude];
+   [locations addObject:locationString];
+}
+
+- (void) removeLocation:(CLLocationCoordinate2D)location
+{
+   NSString *locationString = [NSString stringWithFormat:@"%f %f",
+                               location.latitude, location.longitude];
+   [locations removeObject:locationString];
+}
 
 @end
