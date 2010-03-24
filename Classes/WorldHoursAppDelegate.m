@@ -46,16 +46,28 @@
 
 - (void) addLocation:(CLLocationCoordinate2D)location
 {
-   NSString *locationString = [NSString stringWithFormat:@"%f %f",
+   NSString *locationString = [NSString stringWithFormat:@"%.5f %.5f",
                                location.latitude, location.longitude];
+
+   for (NSString *str in locations)
+      if ([str isEqualToString:locationString])
+         return;
+
    [locations addObject:locationString];
 }
 
 - (void) removeLocation:(CLLocationCoordinate2D)location
 {
-   NSString *locationString = [NSString stringWithFormat:@"%f %f",
+   NSString *locationString = [NSString stringWithFormat:@"%.5f %.5f",
                                location.latitude, location.longitude];
-   [locations removeObject:locationString];
+
+   NSString *target = nil;
+   for (NSString *str in locations)
+      if ([str isEqualToString:locationString])
+         target = [str copy];
+
+   if (target)
+      [locations removeObject:target];
 }
 
 - (void)alertViewCancel:(UIAlertView *)alertView
