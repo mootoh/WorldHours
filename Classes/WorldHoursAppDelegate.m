@@ -8,6 +8,7 @@
 
 #import "WorldHoursAppDelegate.h"
 #import "WorldHoursViewController.h"
+#import "Reachability.h"
 
 @implementation WorldHoursAppDelegate
 
@@ -17,6 +18,11 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+   if ([[Reachability sharedReachability] internetConnectionStatus] == NotReachable) {
+      UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"Turn Off Airplane Mode or Use Wi-Fi to Access Data" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+      [alertView show];
+      return YES;
+   }
    self.locations = [NSMutableSet setWithArray:[[NSUserDefaults standardUserDefaults] arrayForKey:@"locations"]];
    [window addSubview:viewController.view];
    [window makeKeyAndVisible];
@@ -50,6 +56,10 @@
    NSString *locationString = [NSString stringWithFormat:@"%f %f",
                                location.latitude, location.longitude];
    [locations removeObject:locationString];
+}
+
+- (void)alertViewCancel:(UIAlertView *)alertView
+{
 }
 
 @end

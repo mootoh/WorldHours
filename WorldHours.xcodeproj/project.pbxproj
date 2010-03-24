@@ -17,6 +17,8 @@
 		28D7ACF80DDB3853001CB0EB /* WorldHoursViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* WorldHoursViewController.m */; };
 		920CFB661157849C00ABDE44 /* WHMoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 920CFB641157849C00ABDE44 /* WHMoreViewController.m */; };
 		920CFB671157849C00ABDE44 /* WHMoreViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 920CFB651157849C00ABDE44 /* WHMoreViewController.xib */; };
+		920D6EA111599C0400A0DE3F /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 920D6EA011599C0400A0DE3F /* Reachability.m */; };
+		920D6EC711599D2700A0DE3F /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 920D6EC611599D2700A0DE3F /* SystemConfiguration.framework */; };
 		928D76D1115714CF00FC57B1 /* WHTimeAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 928D76D0115714CF00FC57B1 /* WHTimeAnnotation.m */; };
 		928D774911571BC600FC57B1 /* HourLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 928D774811571BC600FC57B1 /* HourLayer.m */; };
 		928D774F11571BEF00FC57B1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 928D774E11571BEF00FC57B1 /* QuartzCore.framework */; };
@@ -40,6 +42,9 @@
 		920CFB631157849C00ABDE44 /* WHMoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WHMoreViewController.h; sourceTree = "<group>"; };
 		920CFB641157849C00ABDE44 /* WHMoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHMoreViewController.m; sourceTree = "<group>"; };
 		920CFB651157849C00ABDE44 /* WHMoreViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = WHMoreViewController.xib; path = Classes/WHMoreViewController.xib; sourceTree = "<group>"; };
+		920D6E9F11599C0400A0DE3F /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		920D6EA011599C0400A0DE3F /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		920D6EC611599D2700A0DE3F /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		928D76CF115714CF00FC57B1 /* WHTimeAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WHTimeAnnotation.h; sourceTree = "<group>"; };
 		928D76D0115714CF00FC57B1 /* WHTimeAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHTimeAnnotation.m; sourceTree = "<group>"; };
 		928D774711571BC600FC57B1 /* HourLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HourLayer.h; sourceTree = "<group>"; };
@@ -58,6 +63,7 @@
 				288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */,
 				92A679C31155059400591E0E /* MapKit.framework in Frameworks */,
 				928D774F11571BEF00FC57B1 /* QuartzCore.framework in Frameworks */,
+				920D6EC711599D2700A0DE3F /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -104,6 +110,8 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
+				920D6E9F11599C0400A0DE3F /* Reachability.h */,
+				920D6EA011599C0400A0DE3F /* Reachability.m */,
 				32CA4F630368D1EE00C91783 /* WorldHours_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
 			);
@@ -129,6 +137,7 @@
 				288765A40DF7441C002DB57D /* CoreGraphics.framework */,
 				92A679C21155059400591E0E /* MapKit.framework */,
 				928D774E11571BEF00FC57B1 /* QuartzCore.framework */,
+				920D6EC611599D2700A0DE3F /* SystemConfiguration.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -194,6 +203,7 @@
 				928D76D1115714CF00FC57B1 /* WHTimeAnnotation.m in Sources */,
 				928D774911571BC600FC57B1 /* HourLayer.m in Sources */,
 				920CFB661157849C00ABDE44 /* WHMoreViewController.m in Sources */,
+				920D6EA111599C0400A0DE3F /* Reachability.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
