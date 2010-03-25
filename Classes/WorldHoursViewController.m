@@ -119,7 +119,6 @@
 {
    static NSString *AnnotationViewID = @"annotationViewID";
    
-#ifndef USE_PIN
    WHAnnotationView *annotationView = (WHAnnotationView *)[map dequeueReusableAnnotationViewWithIdentifier:AnnotationViewID];
    if (annotationView == nil)
    {
@@ -133,23 +132,7 @@
    annotationView.hour   = [whta hour];
    annotationView.minute = [whta minute];   
    [annotationView start];   
-#else
-   MKPinAnnotationView *annotationView = (MKPinAnnotationView *)[map dequeueReusableAnnotationViewWithIdentifier:AnnotationViewID];
-   if (annotationView == nil) {
-      annotationView = [[[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:AnnotationViewID] autorelease];
-      annotationView.canShowCallout = YES;
-   } else {
-      for (UIGestureRecognizer *gr in annotationView.gestureRecognizers)
-         [annotationView removeGestureRecognizer:gr];
-   }
-#endif // 0
-   
-//   PinTappedGestureRecognizer *gr = [[PinTappedGestureRecognizer alloc] initWithTarget:annotationView action:@selector(annotationTapped:)];
-//   [annotationView addGestureRecognizer:gr];
-//   gr.delegate = annotationView;
-//   gr.annotation = annotation;
-//   [gr release];
-   
+
    return annotationView;
 }
 
@@ -198,6 +181,16 @@
    [theMapView removeAnnotation:annotation];
    WHAppDelegate *appDelegate = (WHAppDelegate *)[UIApplication sharedApplication].delegate;
    [appDelegate removeLocation:annotation.coordinate];
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+   [UIView beginAnimations:@"hourViews" context:nil];
+   
+   for (WHHourLayer *layer in hourLayers)
+      [layer update:theMapView forView:self.view];
+   
+   [UIView commitAnimations];
 }
 
 @end
