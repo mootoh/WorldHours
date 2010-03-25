@@ -56,10 +56,7 @@ static NSArray *s_colors = nil;
 {
    CLLocationCoordinate2D center = {0, location.longitude + 15.0/2.0};
    MKCoordinateRegion region = {center, {179.9999, 14.9999999}};
-//   MKCoordinateRegion region = {center, mapView.region.span};
    CGRect rect = [mapView convertRegion:region toRectToView:mapView];
-//   NSLog(@"rect before = %f, %f, %f, %f",         rect.origin.x,         rect.origin.y,         rect.size.width,         rect.size.height);
-   // clipping
    CGFloat x = rect.origin.x, y = rect.origin.y, w = rect.size.width, h = rect.size.height;
    const CGFloat x0 = mapView.frame.origin.x, y0 = mapView.frame.origin.y;
    const CGFloat xx = mapView.frame.origin.x + mapView.frame.size.width;
@@ -117,8 +114,6 @@ static NSArray *s_colors = nil;
 
    rect = CGRectMake(x, y, w, h);
 
-//   NSLog(@"rect after = %f, %f, %f, %f",         rect.origin.x,         rect.origin.y,         rect.size.width,         rect.size.height);
-   
    self.frame = rect;
    if (! clipping)
       [self setNeedsDisplay];

@@ -7,6 +7,7 @@
 #import <MapKit/MapKit.h>
 
 @class WHTimeAnnotation;
+@class OverlayLayer;
 
 @interface WHAnnotationGestureRecognizer : UITapGestureRecognizer
 {
@@ -15,7 +16,10 @@
    UIView *rootView;
    CGPoint srcLocation, dstLocation;
    BOOL touching;
+   OverlayLayer *overlayLayer;
 }
+
+- (void) setupOverlayLayer;
 
 @property (nonatomic, assign) WHTimeAnnotation *annotation;
 @property (nonatomic, retain) MKMapView *mapView;

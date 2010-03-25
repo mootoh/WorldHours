@@ -32,6 +32,7 @@
    
    WHAppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
    gr.rootView = appDelegate.viewController.view;
+   [gr setupOverlayLayer];
    [self addGestureRecognizer:gr];
    [gr release];
 }
