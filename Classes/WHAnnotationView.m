@@ -83,40 +83,21 @@
 
 @synthesize hour, minute, frequency, working, mapView, calculatingDifference;
 
-static NSArray *s_colors = nil;
+static UIColor *s_dayColor   = nil;
+static UIColor *s_nightColor = nil;
 
-+ (NSArray *) colors
++ (UIColor *) dayColor
 {
-   if (s_colors == nil) {
-      s_colors = [NSArray arrayWithObjects:
-                  [UIColor colorWithRed:0.31 green:0.31 blue:0.31 alpha:0.8], // 0
-                  [UIColor colorWithRed:0.25 green:0.25 blue:0.25 alpha:0.8],
-                  [UIColor colorWithRed:0.20 green:0.20 blue:0.20 alpha:0.8],
-                  [UIColor colorWithRed:0.25 green:0.25 blue:0.25 alpha:0.8],
-                  [UIColor colorWithRed:0.31 green:0.31 blue:0.31 alpha:0.8],
-                  [UIColor colorWithRed:0.36 green:0.36 blue:0.36 alpha:0.8],
-                  [UIColor colorWithRed:0.42 green:0.42 blue:0.42 alpha:0.8], // 6
-                  [UIColor colorWithRed:0.47 green:0.47 blue:0.47 alpha:0.8],
-                  [UIColor colorWithRed:0.53 green:0.53 blue:0.53 alpha:0.8],
-                  [UIColor colorWithRed:0.58 green:0.58 blue:0.58 alpha:0.8],
-                  [UIColor colorWithRed:0.64 green:0.64 blue:0.64 alpha:0.8],
-                  [UIColor colorWithRed:0.69 green:0.69 blue:0.69 alpha:0.8],
-                  [UIColor colorWithRed:0.75 green:0.75 blue:0.75 alpha:0.8], // 12
-                  [UIColor colorWithRed:0.80 green:0.80 blue:0.80 alpha:0.8],
-                  [UIColor colorWithRed:0.86 green:0.86 blue:0.86 alpha:0.8],
-                  [UIColor colorWithRed:0.80 green:0.80 blue:0.80 alpha:0.8],
-                  [UIColor colorWithRed:0.75 green:0.75 blue:0.75 alpha:0.8],
-                  [UIColor colorWithRed:0.69 green:0.69 blue:0.69 alpha:0.8],
-                  [UIColor colorWithRed:0.64 green:0.64 blue:0.64 alpha:0.8], // 18
-                  [UIColor colorWithRed:0.58 green:0.58 blue:0.58 alpha:0.8],
-                  [UIColor colorWithRed:0.53 green:0.53 blue:0.53 alpha:0.8],
-                  [UIColor colorWithRed:0.47 green:0.47 blue:0.47 alpha:0.8],
-                  [UIColor colorWithRed:0.42 green:0.42 blue:0.42 alpha:0.8],
-                  [UIColor colorWithRed:0.36 green:0.36 blue:0.36 alpha:0.8], // 23
-                  nil];
-      [s_colors retain];
-   }
-   return s_colors;
+   if (s_dayColor == nil)
+      s_dayColor = [[UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:0.8] retain];
+   return s_dayColor;
+}
+
++ (UIColor *) nightColor
+{
+   if (s_nightColor == nil)
+      s_nightColor = [[UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:0.8] retain];
+   return s_nightColor;
 }
 
 - (id) initWithAnnotation:(id <MKAnnotation>)annotation reuseIdentifier:(NSString *)reuseIdentifier
@@ -162,24 +143,24 @@ static NSArray *s_colors = nil;
 - (void)drawRect:(CGRect)rect
 {
    CGContextRef context = UIGraphicsGetCurrentContext();
+   CGColorRef backColor = (hour >= 6 && hour < 18) ? [[WHAnnotationView dayColor] CGColor] : [[WHAnnotationView nightColor] CGColor];
+   CGColorRef foreColor = (hour >= 6 && hour < 18) ? [[WHAnnotationView nightColor] CGColor] : [[WHAnnotationView dayColor] CGColor];
    
    // circle around
    CGRect ellipseRect = CGRectMake(rect.origin.x+5, rect.origin.y+5, rect.size.width-10, rect.size.height-10);
-   CGContextSetRGBStrokeColor(context, 0.3, 0.3, 0.3, 1.0);
-   CGContextSetLineWidth(context, 4.0f);
-   CGContextSetFillColorWithColor(context, [[[WHAnnotationView colors] objectAtIndex:hour] CGColor]);
+   CGContextSetStrokeColorWithColor(context, foreColor);
+   CGContextSetLineWidth(context, 1.7f);
+   CGContextSetFillColorWithColor(context, backColor);
    CGContextAddEllipseInRect(context, ellipseRect);
    CGContextFillPath(context);
    CGContextAddEllipseInRect(context, ellipseRect);
    CGContextStrokePath(context);
    
    CGPoint ellipseCenter = {rect.origin.x + rect.size.width/2, rect.origin.y + rect.size.height/2};
-   CGFloat minuteHand = rect.size.height * 0.4;
-   CGFloat hourHand = rect.size.height * 0.25;
+   CGFloat minuteHand = rect.size.height * 0.35;
+   CGFloat hourHand = rect.size.height * 0.22;
    
-   CGColorRef circleColor = [[[WHAnnotationView colors] objectAtIndex:hour] CGColor];
-   const CGFloat *colorComponents = CGColorGetComponents(circleColor);
-   CGContextSetRGBStrokeColor(context, 1.0 - colorComponents[0] + 0.25, 1.0 - colorComponents[1] + 0.1, 1.0 - colorComponents[2] + 0.1, colorComponents[3]);
+   CGContextSetStrokeColorWithColor(context, foreColor);
    
    // minuteHand
    CGContextSetLineWidth(context, 1.5f);
@@ -190,7 +171,7 @@ static NSArray *s_colors = nil;
    CGContextStrokePath(context);
    
    // hourHand
-   CGContextSetLineWidth(context, 3.0f);
+   CGContextSetLineWidth(context, 3.5f);
    CGContextMoveToPoint(context, ellipseCenter.x, ellipseCenter.y);
    CGContextAddLineToPoint(context,
                            ellipseCenter.x + sinf(M_PI / 180.0f * (hour * 30.0f + minute * 0.5f)) * hourHand,
@@ -198,9 +179,9 @@ static NSArray *s_colors = nil;
    CGContextStrokePath(context);
    
    // center circle
-   CGRect innerEllipseRect = CGRectMake(ellipseCenter.x-4, ellipseCenter.y-4, 8, 8);
-   CGContextSetRGBStrokeColor(context, 1.0, 0.0, 0.0, 1.0);
-   CGContextSetRGBFillColor(context, 1.0, 0.0, 0.0, 1.0);
+   CGRect innerEllipseRect = CGRectMake(ellipseCenter.x-3, ellipseCenter.y-3, 6, 6);
+   CGContextSetStrokeColorWithColor(context, foreColor);
+   CGContextSetFillColorWithColor(context, foreColor);
    CGContextAddEllipseInRect(context, innerEllipseRect);
    CGContextFillPath(context);
 }
