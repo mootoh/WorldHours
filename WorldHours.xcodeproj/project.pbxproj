@@ -22,6 +22,8 @@
 		928D76D1115714CF00FC57B1 /* WHTimeAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 928D76D0115714CF00FC57B1 /* WHTimeAnnotation.m */; };
 		928D774911571BC600FC57B1 /* WHHourLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 928D774811571BC600FC57B1 /* WHHourLayer.m */; };
 		928D774F11571BEF00FC57B1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 928D774E11571BEF00FC57B1 /* QuartzCore.framework */; };
+		928F6FF9115B45F4002075D4 /* WHAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 928F6FF8115B45F4002075D4 /* WHAnnotationView.m */; };
+		928F7073115B4A4E002075D4 /* PinTappedGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 928F7072115B4A4E002075D4 /* PinTappedGestureRecognizer.m */; };
 		92A679C31155059400591E0E /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A679C21155059400591E0E /* MapKit.framework */; };
 /* End PBXBuildFile section */
 
@@ -50,6 +52,10 @@
 		928D774711571BC600FC57B1 /* WHHourLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WHHourLayer.h; sourceTree = "<group>"; };
 		928D774811571BC600FC57B1 /* WHHourLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHHourLayer.m; sourceTree = "<group>"; };
 		928D774E11571BEF00FC57B1 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		928F6FF7115B45F4002075D4 /* WHAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WHAnnotationView.h; sourceTree = "<group>"; };
+		928F6FF8115B45F4002075D4 /* WHAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHAnnotationView.m; sourceTree = "<group>"; };
+		928F7071115B4A4E002075D4 /* PinTappedGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PinTappedGestureRecognizer.h; sourceTree = "<group>"; };
+		928F7072115B4A4E002075D4 /* PinTappedGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PinTappedGestureRecognizer.m; sourceTree = "<group>"; };
 		92A679C21155059400591E0E /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -77,12 +83,16 @@
 				1D3623250D0F684500981E51 /* WHAppDelegate.m */,
 				28D7ACF60DDB3853001CB0EB /* WorldHoursViewController.h */,
 				28D7ACF70DDB3853001CB0EB /* WorldHoursViewController.m */,
-				928D76CF115714CF00FC57B1 /* WHTimeAnnotation.h */,
-				928D76D0115714CF00FC57B1 /* WHTimeAnnotation.m */,
 				928D774711571BC600FC57B1 /* WHHourLayer.h */,
 				928D774811571BC600FC57B1 /* WHHourLayer.m */,
+				928D76CF115714CF00FC57B1 /* WHTimeAnnotation.h */,
+				928D76D0115714CF00FC57B1 /* WHTimeAnnotation.m */,
+				928F6FF7115B45F4002075D4 /* WHAnnotationView.h */,
+				928F6FF8115B45F4002075D4 /* WHAnnotationView.m */,
 				920CFB631157849C00ABDE44 /* WHMoreViewController.h */,
 				920CFB641157849C00ABDE44 /* WHMoreViewController.m */,
+				928F7071115B4A4E002075D4 /* PinTappedGestureRecognizer.h */,
+				928F7072115B4A4E002075D4 /* PinTappedGestureRecognizer.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -204,6 +214,8 @@
 				928D774911571BC600FC57B1 /* WHHourLayer.m in Sources */,
 				920CFB661157849C00ABDE44 /* WHMoreViewController.m in Sources */,
 				920D6EA111599C0400A0DE3F /* Reachability.m in Sources */,
+				928F6FF9115B45F4002075D4 /* WHAnnotationView.m in Sources */,
+				928F7073115B4A4E002075D4 /* PinTappedGestureRecognizer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

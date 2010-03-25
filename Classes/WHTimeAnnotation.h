@@ -23,5 +23,7 @@
 - (id) initWithCoordinate:(CLLocationCoordinate2D) coord;
 - (void) search;
 
-@end
+- (NSInteger) hour;
+- (NSInteger) minute;
 
+@end

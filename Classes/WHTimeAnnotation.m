@@ -80,4 +80,24 @@
    [super dealloc];
 }
 
+- (NSInteger) hour
+{
+   NSCalendar *calendar = [NSCalendar currentCalendar];
+   NSTimeZone *gmtTimeZone = [NSTimeZone timeZoneWithName:timezoneId];
+   [calendar setTimeZone:gmtTimeZone];
+   
+   NSDateComponents *compo = [calendar components:NSHourCalendarUnit fromDate:[NSDate date]];
+   return [compo hour];
+}
+
+- (NSInteger) minute
+{
+   NSCalendar *calendar = [NSCalendar currentCalendar];
+   NSTimeZone *gmtTimeZone = [NSTimeZone timeZoneWithName:timezoneId];
+   [calendar setTimeZone:gmtTimeZone];
+   
+   NSDateComponents *compo = [calendar components:NSMinuteCalendarUnit fromDate:[NSDate date]];
+   return [compo minute];
+}
+
 @end

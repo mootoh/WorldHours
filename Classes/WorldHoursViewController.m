@@ -10,55 +10,10 @@
 #import "WorldHoursViewController.h"
 #import "WHHourLayer.h"
 #import "WHTimeAnnotation.h"
+#import "WHAnnotationView.h"
 #import "WHMoreViewController.h"
 #import "WHAppDelegate.h"
-
-@interface WHTimeAnnotationView : MKAnnotationView
-@end
-
-@implementation WHTimeAnnotationView
-
-- (void) drawRect:(CGRect) rect
-{
-   CGContextRef context = UIGraphicsGetCurrentContext();
-   CGColorRef color = [[UIColor blueColor] CGColor];
-   CGContextSetStrokeColorWithColor(context, color);
-   
-   CGFloat lineWidth = rect.size.width*2;
-   CGContextSetLineWidth(context, lineWidth);
-   
-   CGContextMoveToPoint(context, 0.0f, 0.0f);
-   CGContextAddLineToPoint(context, 0.0f, rect.size.height);
-   CGContextStrokePath(context);   
-}
-
-@end
-
-@interface PinTappedRecognizer : UITapGestureRecognizer
-{
-   id <MKAnnotation> annotation;
-}
-
-@property (nonatomic, assign) id <MKAnnotation> annotation;
-@end
-
-@implementation PinTappedRecognizer
-@synthesize annotation;
-
-- (id) initWithTarget:(id)target action:(SEL)action
-{
-   if (self = [super initWithTarget:target action:action]) {
-      annotation = nil;
-   }
-   return self;
-}
-
-- (void) dealloc
-{
-   [super dealloc];
-}
-
-@end
+#import "PinTappedGestureRecognizer.h"
 
 @implementation WorldHoursViewController
 
@@ -92,7 +47,7 @@
    
    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(parseFinished:) name:@"parseFinished" object:nil];
    
-   UITapGestureRecognizer *tapGR = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)];
+   UITapGestureRecognizer *tapGR = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(mapTapped:)];
    [theMapView addGestureRecognizer:tapGR];
    tapGR.delegate = self;
    [tapGR release];
@@ -163,15 +118,18 @@
 {
    static NSString *AnnotationViewID = @"annotationViewID";
    
-#ifdef NO_USE_PIN
-   WHTimeAnnotationView *annotationView =
-   (WHTimeAnnotationView *)[map dequeueReusableAnnotationViewWithIdentifier:AnnotationViewID];
+#ifndef USE_PIN
+   WHAnnotationView *annotationView = (WHAnnotationView *)[map dequeueReusableAnnotationViewWithIdentifier:AnnotationViewID];
    if (annotationView == nil)
    {
-      annotationView = [[[WHTimeAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:AnnotationViewID] autorelease];
+      annotationView = [[[WHAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:AnnotationViewID] autorelease];
    }
-#endif // NO_USE_PIN
-
+   
+   WHTimeAnnotation *whta = (WHTimeAnnotation *)annotation;
+   annotationView.hour   = [whta hour];
+   annotationView.minute = [whta minute];
+   [annotationView start];
+#else
    MKPinAnnotationView *annotationView = (MKPinAnnotationView *)[map dequeueReusableAnnotationViewWithIdentifier:AnnotationViewID];
    if (annotationView == nil) {
       annotationView = [[[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:AnnotationViewID] autorelease];
@@ -180,12 +138,13 @@
       for (UIGestureRecognizer *gr in annotationView.gestureRecognizers)
          [annotationView removeGestureRecognizer:gr];
    }
-
-   PinTappedRecognizer *gr = [[PinTappedRecognizer alloc] initWithTarget:self action:@selector(annotationTapped:)];
-   [annotationView addGestureRecognizer:gr];
-   gr.delegate = self;
-   gr.annotation = annotation;
-   [gr release];
+#endif // 0
+   
+//   PinTappedGestureRecognizer *gr = [[PinTappedGestureRecognizer alloc] initWithTarget:annotationView action:@selector(annotationTapped:)];
+//   [annotationView addGestureRecognizer:gr];
+//   gr.delegate = annotationView;
+//   gr.annotation = annotation;
+//   [gr release];
    
    return annotationView;
 }
@@ -200,20 +159,25 @@
 
 #pragma mark UIGestureRecognizerDelegate
 
-- (void) handleGesture:(UITapGestureRecognizer *)recognizer
+- (void) mapTapped:(UITapGestureRecognizer *)recognizer
 {
    CGPoint point = [recognizer locationInView:theMapView];
+   for (id <MKAnnotation> annotation in [theMapView annotations]) {
+      // include the point?
+      MKAnnotationView *av = [theMapView viewForAnnotation:annotation];
+      CGPoint annotationPoint = [theMapView convertCoordinate:annotation.coordinate toPointToView:theMapView];
+      CGRect boundingBox = CGRectMake(annotationPoint.x - av.frame.size.width/2,
+                                      annotationPoint.y - av.frame.size.height/2,
+                                      av.frame.size.width, av.frame.size.height);
+      if (CGRectContainsPoint(boundingBox, point)) {
+         NSLog(@"point included");
+         [theMapView selectAnnotation:annotation animated:YES];
+         return;
+      }
+   }
    CLLocationCoordinate2D coord = [theMapView convertPoint:point toCoordinateFromView:self.view];
-//   NSLog(@"coord = %f, %f", coord.latitude, coord.longitude);
    WHTimeAnnotation *annotation = [[WHTimeAnnotation alloc] initWithCoordinate:coord];
    [annotation search];
-}
-
-- (void) annotationTapped:(PinTappedRecognizer *)recognizer
-{
-   [theMapView removeAnnotation:recognizer.annotation];
-   WHAppDelegate *appDelegate = (WHAppDelegate *)[UIApplication sharedApplication].delegate;
-   [appDelegate removeLocation:recognizer.annotation.coordinate];
 }
 
 - (void) modeSwitched
