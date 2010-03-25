@@ -13,7 +13,7 @@
 #import "WHAnnotationView.h"
 #import "WHMoreViewController.h"
 #import "WHAppDelegate.h"
-#import "PinTappedGestureRecognizer.h"
+#import "WHAnnotationGestureRecognizer.h"
 
 @implementation WorldHoursViewController
 
@@ -126,9 +126,12 @@
    }
    
    WHTimeAnnotation *whta = (WHTimeAnnotation *)annotation;
+   annotationView.annotation = whta;
+   annotationView.mapView = map;
+   [annotationView setupCalloutView];
    annotationView.hour   = [whta hour];
-   annotationView.minute = [whta minute];
-   [annotationView start];
+   annotationView.minute = [whta minute];   
+   [annotationView start];   
 #else
    MKPinAnnotationView *annotationView = (MKPinAnnotationView *)[map dequeueReusableAnnotationViewWithIdentifier:AnnotationViewID];
    if (annotationView == nil) {

@@ -6,13 +6,46 @@
 //  Copyright 2010 deadbeaf.org. All rights reserved.
 //
 
-#import "WHAnnotationView.h"
 #import <MapKit/MapKit.h>
-#import "PinTappedGestureRecognizer.h"
+#import "WHAppDelegate.h"
+#import "WorldHoursViewController.h"
+#import "WHAnnotationView.h"
+#import "WHAnnotationGestureRecognizer.h"
+#import "WHTimeAnnotation.h"
+
+@implementation WHAnnotationCalloutView
+@synthesize mapView;
+
+- (id) initWithFrame:(CGRect)frame
+{
+   if (self = [super initWithFrame:frame]) {
+      self.backgroundColor = [UIColor blueColor];
+   }
+   return self;
+}
+
+- (void) setupGestureRecognizer:(WHTimeAnnotation *)annotation
+{
+   WHAnnotationGestureRecognizer *gr = [[WHAnnotationGestureRecognizer alloc] initWithTarget:nil action:nil];
+   gr.mapView = mapView;
+   gr.annotation = annotation;
+   
+   WHAppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
+   gr.rootView = appDelegate.viewController.view;
+   [self addGestureRecognizer:gr];
+   [gr release];
+}
+
+- (void) drawRect:(CGRect)rect
+{
+   CGContextRef context = UIGraphicsGetCurrentContext();   
+}
+
+@end
 
 @implementation WHAnnotationView
 
-@synthesize hour, minute, frequency, working;
+@synthesize hour, minute, frequency, working, mapView;
 
 static NSArray *s_colors = nil;
 
@@ -62,6 +95,15 @@ static NSArray *s_colors = nil;
       self.canShowCallout = YES;
    }
    return self;
+}
+
+- (void) setupCalloutView
+{   
+   WHAnnotationCalloutView *calloutView = [[WHAnnotationCalloutView alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
+   calloutView.mapView = mapView;
+   [calloutView setupGestureRecognizer:self.annotation];
+   self.leftCalloutAccessoryView = calloutView;
+   [calloutView release];
 }
 
 - (void)drawRect:(CGRect)rect
@@ -142,7 +184,7 @@ static NSArray *s_colors = nil;
    working = NO;
 }
 
-- (void) annotationTapped:(PinTappedGestureRecognizer *)recognizer
+- (void) annotationTapped:(WHAnnotationGestureRecognizer *)recognizer
 {
    if (state == STATE_INITIAL) {
       [self setSelected:YES animated:YES];
@@ -152,6 +194,5 @@ static NSArray *s_colors = nil;
 //      [appDelegate removeLocation:recognizer.annotation.coordinate];
    }
 }
-
 
 @end
