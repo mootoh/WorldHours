@@ -20,32 +20,30 @@ static NSArray *s_colors = nil;
 {
    if (s_colors == nil) {
       s_colors = [NSArray arrayWithObjects:
-                  [UIColor colorWithRed:0.20 green:0.20 blue:0.20 alpha:0.5], // AM 0
-                  [UIColor colorWithRed:0.25 green:0.25 blue:0.25 alpha:0.5],
-                  [UIColor colorWithRed:0.30 green:0.30 blue:0.30 alpha:0.5],
-                  [UIColor colorWithRed:0.35 green:0.35 blue:0.35 alpha:0.5],
-                  [UIColor colorWithRed:0.40 green:0.40 blue:0.40 alpha:0.5],
-                  [UIColor colorWithRed:0.45 green:0.45 blue:0.45 alpha:0.5], // AM 5, good morning
-                  [UIColor colorWithRed:0.50 green:0.50 blue:0.50 alpha:0.4],
-                  [UIColor colorWithRed:0.55 green:0.55 blue:0.55 alpha:0.4],
-                  [UIColor colorWithRed:0.60 green:0.60 blue:0.60 alpha:0.3], // AM 8
-                  [UIColor colorWithRed:0.65 green:0.65 blue:0.65 alpha:0.3],
-                  
-                  [UIColor colorWithRed:0.70 green:0.70 blue:0.70 alpha:0.2],
-                  [UIColor colorWithRed:0.75 green:0.75 blue:0.75 alpha:0.2],
-                  [UIColor colorWithRed:0.80 green:0.80 blue:0.80 alpha:0.1], // noon
-                  [UIColor colorWithRed:0.90 green:0.85 blue:0.85 alpha:0.4],
-                  [UIColor colorWithRed:1.00 green:1.00 blue:1.00 alpha:0.5], // PM 2
-                  [UIColor colorWithRed:0.85 green:0.85 blue:0.85 alpha:0.4],
-                  [UIColor colorWithRed:0.80 green:0.80 blue:0.80 alpha:0.2],
-                  [UIColor colorWithRed:0.70 green:0.70 blue:0.70 alpha:0.3],
-                  [UIColor colorWithRed:0.50 green:0.50 blue:0.50 alpha:0.3], // PM 6, night begins
-                  [UIColor colorWithRed:0.45 green:0.45 blue:0.45 alpha:0.4],
-                  
-                  [UIColor colorWithRed:0.40 green:0.40 blue:0.40 alpha:0.4],
-                  [UIColor colorWithRed:0.35 green:0.35 blue:0.35 alpha:0.5],
-                  [UIColor colorWithRed:0.30 green:0.30 blue:0.30 alpha:0.5],
-                  [UIColor colorWithRed:0.25 green:0.25 blue:0.25 alpha:0.5],
+                  [UIColor colorWithRed:0.31 green:0.31 blue:0.31 alpha:0.80], // 0
+                  [UIColor colorWithRed:0.25 green:0.25 blue:0.25 alpha:0.85],
+                  [UIColor colorWithRed:0.20 green:0.20 blue:0.20 alpha:0.90],
+                  [UIColor colorWithRed:0.25 green:0.25 blue:0.25 alpha:0.85],
+                  [UIColor colorWithRed:0.31 green:0.31 blue:0.31 alpha:0.80],
+                  [UIColor colorWithRed:0.36 green:0.36 blue:0.36 alpha:0.75],
+                  [UIColor colorWithRed:0.42 green:0.42 blue:0.42 alpha:0.70], // 6
+                  [UIColor colorWithRed:0.47 green:0.47 blue:0.47 alpha:0.65],
+                  [UIColor colorWithRed:0.53 green:0.53 blue:0.53 alpha:0.60],
+                  [UIColor colorWithRed:0.58 green:0.58 blue:0.58 alpha:0.55],
+                  [UIColor colorWithRed:0.64 green:0.64 blue:0.64 alpha:0.50],
+                  [UIColor colorWithRed:0.69 green:0.69 blue:0.69 alpha:0.45],
+                  [UIColor colorWithRed:0.75 green:0.75 blue:0.75 alpha:0.40], // 12
+                  [UIColor colorWithRed:0.80 green:0.80 blue:0.80 alpha:0.35],
+                  [UIColor colorWithRed:0.86 green:0.86 blue:0.86 alpha:0.30],
+                  [UIColor colorWithRed:0.80 green:0.80 blue:0.80 alpha:0.35],
+                  [UIColor colorWithRed:0.75 green:0.75 blue:0.75 alpha:0.40],
+                  [UIColor colorWithRed:0.69 green:0.69 blue:0.69 alpha:0.45],
+                  [UIColor colorWithRed:0.64 green:0.64 blue:0.64 alpha:0.50], // 18
+                  [UIColor colorWithRed:0.58 green:0.58 blue:0.58 alpha:0.55],
+                  [UIColor colorWithRed:0.53 green:0.53 blue:0.53 alpha:0.60],
+                  [UIColor colorWithRed:0.47 green:0.47 blue:0.47 alpha:0.65],
+                  [UIColor colorWithRed:0.42 green:0.42 blue:0.42 alpha:0.70],
+                  [UIColor colorWithRed:0.36 green:0.36 blue:0.36 alpha:0.75], // 23
                   nil];
       [s_colors retain];
    }
