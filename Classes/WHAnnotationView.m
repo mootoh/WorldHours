@@ -19,7 +19,10 @@
 - (id) initWithFrame:(CGRect)frame
 {
    if (self = [super initWithFrame:frame]) {
-      self.backgroundColor = [UIColor blueColor];
+      self.backgroundColor = [UIColor clearColor];
+      UIImageView *iv = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"arrowButton.png"]];
+      [self addSubview:iv];
+      [iv release];
    }
    return self;
 }
@@ -57,10 +60,13 @@
 - (id) initWithFrame:(CGRect)frame
 {
    if (self = [super initWithFrame:frame]) {
-      self.backgroundColor = [UIColor redColor];
       UITapGestureRecognizer *gr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped)];
       [self addGestureRecognizer:gr];
       [gr release];
+      
+      UIImageView *iv = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"closeButton.png"]];
+      [self addSubview:iv];
+      [iv release];
    }
    return self;
 }
@@ -128,13 +134,13 @@ static UIColor *s_nightColor = nil;
 
 - (void) setupCalloutView
 {   
-   WHAnnotationLeftCalloutView *leftCalloutView = [[WHAnnotationLeftCalloutView alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
+   WHAnnotationLeftCalloutView *leftCalloutView = [[WHAnnotationLeftCalloutView alloc] initWithFrame:CGRectMake(0, 0, 24, 24)];
    leftCalloutView.mapView = mapView;
    [leftCalloutView setupGestureRecognizer:self.annotation];
    self.leftCalloutAccessoryView = leftCalloutView;
    [leftCalloutView release];
 
-   WHAnnotationRightCalloutView *rightCalloutView = [[WHAnnotationRightCalloutView alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
+   WHAnnotationRightCalloutView *rightCalloutView = [[WHAnnotationRightCalloutView alloc] initWithFrame:CGRectMake(0, 0, 24, 24)];
    rightCalloutView.annotation = self.annotation;
    self.rightCalloutAccessoryView = rightCalloutView;
    [rightCalloutView release];

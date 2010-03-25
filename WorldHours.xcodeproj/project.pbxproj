@@ -25,6 +25,8 @@
 		928F6FF9115B45F4002075D4 /* WHAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 928F6FF8115B45F4002075D4 /* WHAnnotationView.m */; };
 		928F7073115B4A4E002075D4 /* WHAnnotationGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 928F7072115B4A4E002075D4 /* WHAnnotationGestureRecognizer.m */; };
 		92A679C31155059400591E0E /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A679C21155059400591E0E /* MapKit.framework */; };
+		92B070B2115BD8FF005D47E1 /* closeButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 92B070B1115BD8FF005D47E1 /* closeButton.png */; };
+		92B070DF115BDCE6005D47E1 /* arrowButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 92B070DE115BDCE6005D47E1 /* arrowButton.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,6 +60,8 @@
 		928F7072115B4A4E002075D4 /* WHAnnotationGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHAnnotationGestureRecognizer.m; sourceTree = "<group>"; };
 		92A679C21155059400591E0E /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		92B0706F115BD3BD005D47E1 /* logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = logger.h; sourceTree = "<group>"; };
+		92B070B1115BD8FF005D47E1 /* closeButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = closeButton.png; sourceTree = "<group>"; };
+		92B070DE115BDCE6005D47E1 /* arrowButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrowButton.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +132,8 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				92B070DE115BDCE6005D47E1 /* arrowButton.png */,
+				92B070B1115BD8FF005D47E1 /* closeButton.png */,
 				2899E5210DE3E06400AC0155 /* WorldHoursViewController.xib */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
 				920CFB651157849C00ABDE44 /* WHMoreViewController.xib */,
@@ -207,6 +213,8 @@
 				28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */,
 				2899E5220DE3E06400AC0155 /* WorldHoursViewController.xib in Resources */,
 				920CFB671157849C00ABDE44 /* WHMoreViewController.xib in Resources */,
+				92B070B2115BD8FF005D47E1 /* closeButton.png in Resources */,
+				92B070DF115BDCE6005D47E1 /* arrowButton.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

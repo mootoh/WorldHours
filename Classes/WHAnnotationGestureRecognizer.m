@@ -36,21 +36,31 @@
 - (void)drawInContext:(CGContextRef)ctx
 {
 //   LOG(@"src = %f, %f, dst = %f, %f", srcLocation.x, srcLocation.y, dstLocation.x, dstLocation.y);
-   CGContextSetStrokeColorWithColor(ctx, [[UIColor colorWithWhite:0.1 alpha:0.8] CGColor]);
+   CGContextSetStrokeColorWithColor(ctx, [[UIColor colorWithWhite:0.4 alpha:0.8] CGColor]);
    CGContextSetLineWidth(ctx, 2.0);
    CGContextMoveToPoint(ctx, srcLocation.x, srcLocation.y);
+   CGFloat lengths[] = {2, 3};
+   CGContextSetLineDash(ctx, 0, lengths, 2);
    CGContextAddLineToPoint(ctx, dstLocation.x, dstLocation.y);
    CGContextStrokePath(ctx);
    
    if (difference != INVALID_DIFFERENCE) {
       // draw difference text
-      CGContextSetFillColorWithColor(ctx, [[UIColor blackColor] CGColor]);
-      CGContextSelectFont(ctx, "Helvetica", 24.0, kCGEncodingMacRoman);
+      CGContextSetFillColorWithColor(ctx, [[UIColor colorWithWhite:0.2 alpha:0.8] CGColor]);
+      CGContextSelectFont(ctx, "Helvetica", 32.0, kCGEncodingMacRoman);
       CGContextSetTextMatrix(ctx, CGAffineTransformMakeScale(1.0, -1.0));
 
-      NSString *differenceString = [NSString stringWithFormat:@"%d", difference];
-      CGPoint textPoint = CGPointMake((srcLocation.x + dstLocation.x)/2-24.0,
-                                      (srcLocation.y + dstLocation.y)/2-24.0);
+      if (difference > 12)
+         difference = -(difference-12);
+      if (difference < -12)
+         difference = 12+difference;
+      difference = -difference;
+
+      NSString *differenceString = (difference > 0)
+         ? [NSString stringWithFormat:@"+%d", difference]
+         : [NSString stringWithFormat:@"%d", difference];
+      CGPoint textPoint = CGPointMake((srcLocation.x + dstLocation.x)/2-32.0,
+                                      (srcLocation.y + dstLocation.y)/2-32.0);
       CGContextShowTextAtPoint(ctx, textPoint.x, textPoint.y, [differenceString UTF8String], [differenceString lengthOfBytesUsingEncoding:NSUTF8StringEncoding]);      
    }
 }
@@ -89,7 +99,8 @@
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-   srcLocation = [[touches anyObject] locationInView:rootView];
+//   srcLocation = [[touches anyObject] locationInView:rootView];
+   srcLocation = [mapView convertCoordinate:annotation.coordinate toPointToView:rootView];
    LOG(@"touchesBegin : (%f, %f)", srcLocation.x, srcLocation.y);
 
    UIView *view = [mapView viewForAnnotation:annotation];
