@@ -6,10 +6,10 @@
 //  Copyright 2010 deadbeaf.org. All rights reserved.
 //
 
-#import "HourLayer.h"
+#import "WHHourLayer.h"
 #import <QuartzCore/QuartzCore.h>
 
-@implementation HourLayer
+@implementation WHHourLayer
 @synthesize location;
 @synthesize offset;
 @synthesize hour;
@@ -128,7 +128,7 @@ static NSArray *s_colors = nil;
 {
    CGRect rect = self.frame;
    
-   CGColorRef color = [[[HourLayer colors] objectAtIndex:hour] CGColor];
+   CGColorRef color = [[[WHHourLayer colors] objectAtIndex:hour] CGColor];
    CGContextSetStrokeColorWithColor(context, color);
    
    CGFloat lineWidth = rect.size.width*2;

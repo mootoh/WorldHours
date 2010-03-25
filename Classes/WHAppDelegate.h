@@ -11,7 +11,7 @@
 
 @class WorldHoursViewController;
 
-@interface WorldHoursAppDelegate : NSObject <UIApplicationDelegate>
+@interface WHAppDelegate : NSObject <UIApplicationDelegate>
 {
    UIWindow *window;
    WorldHoursViewController *viewController;

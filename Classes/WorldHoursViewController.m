@@ -8,10 +8,10 @@
 
 #import <QuartzCore/QuartzCore.h>
 #import "WorldHoursViewController.h"
-#import "HourLayer.h"
+#import "WHHourLayer.h"
 #import "WHTimeAnnotation.h"
 #import "WHMoreViewController.h"
-#import "WorldHoursAppDelegate.h"
+#import "WHAppDelegate.h"
 
 @interface WHTimeAnnotationView : MKAnnotationView
 @end
@@ -70,7 +70,7 @@
    NSInteger hour = [[calendar components:NSHourCalendarUnit fromDate:[NSDate date]] hour];
    
    for (int i=0; i<24; i++) {
-      HourLayer *layer = [[HourLayer alloc] init];
+      WHHourLayer *layer = [[WHHourLayer alloc] init];
       CLLocationCoordinate2D loc = {0.0, (i < 12 ? 0.0 : -180.0) + 15.0 * (i < 12 ? i : i-12)};
       layer.location = loc;
       layer.hour = (hour + i) % 24;
@@ -99,7 +99,7 @@
    
    [segmentedControl addTarget:self action:@selector(modeSwitched) forControlEvents:UIControlEventValueChanged];
 
-   WorldHoursAppDelegate *appDelegate = (WorldHoursAppDelegate *)[UIApplication sharedApplication].delegate;
+   WHAppDelegate *appDelegate = (WHAppDelegate *)[UIApplication sharedApplication].delegate;
    for (NSString *loc in appDelegate.locations) {
       CGFloat lat, lon;
       sscanf([loc UTF8String], "%f %f", &lat, &lon);
@@ -153,7 +153,7 @@
 {
    [UIView beginAnimations:@"hourViews" context:nil];
    
-   for (HourLayer *layer in hourLayers)
+   for (WHHourLayer *layer in hourLayers)
       [layer update:mapView forView:self.view];
 
    [UIView commitAnimations];
@@ -194,7 +194,7 @@
 {
    id <MKAnnotation> annotation = [[theMapView annotations] lastObject];
    [theMapView selectAnnotation:annotation animated:YES];
-   WorldHoursAppDelegate *appDelegate = (WorldHoursAppDelegate *)[UIApplication sharedApplication].delegate;
+   WHAppDelegate *appDelegate = (WHAppDelegate *)[UIApplication sharedApplication].delegate;
    [appDelegate addLocation:annotation.coordinate];
 }
 
@@ -212,7 +212,7 @@
 - (void) annotationTapped:(PinTappedRecognizer *)recognizer
 {
    [theMapView removeAnnotation:recognizer.annotation];
-   WorldHoursAppDelegate *appDelegate = (WorldHoursAppDelegate *)[UIApplication sharedApplication].delegate;
+   WHAppDelegate *appDelegate = (WHAppDelegate *)[UIApplication sharedApplication].delegate;
    [appDelegate removeLocation:recognizer.annotation.coordinate];
 }
 

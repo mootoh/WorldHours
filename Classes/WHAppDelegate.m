@@ -6,11 +6,11 @@
 //  Copyright deadbeaf.org 2010. All rights reserved.
 //
 
-#import "WorldHoursAppDelegate.h"
+#import "WHAppDelegate.h"
 #import "WorldHoursViewController.h"
 #import "Reachability.h"
 
-@implementation WorldHoursAppDelegate
+@implementation WHAppDelegate
 
 @synthesize window;
 @synthesize viewController;

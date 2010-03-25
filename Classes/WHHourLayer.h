@@ -9,7 +9,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import <MapKit/MapKit.h>
 
-@interface HourLayer : CALayer {
+@interface WHHourLayer : CALayer {
    CLLocationCoordinate2D location;
    NSInteger offset;
    NSInteger hour;   
