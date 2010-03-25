@@ -38,6 +38,7 @@
    NSInteger minute;
    CGFloat frequency; // update frequency, specified in second
    BOOL working;
+   BOOL calculatingDifference;
    MKMapView *mapView;
    
    enum {
@@ -51,6 +52,7 @@
 @property (nonatomic, assign) CGFloat frequency;
 @property (nonatomic, readonly) BOOL working;
 @property (nonatomic, retain) MKMapView *mapView;
+@property (nonatomic, assign) BOOL calculatingDifference;
 
 - (void) setupCalloutView;
 

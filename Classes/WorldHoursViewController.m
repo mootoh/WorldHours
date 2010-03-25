@@ -17,7 +17,7 @@
 
 @implementation WorldHoursViewController
 
-- (void) showAnnotations
+- (void) loadAnnotations
 {
    WHAppDelegate *appDelegate = (WHAppDelegate *)[UIApplication sharedApplication].delegate;
    for (NSString *loc in appDelegate.locations) {
@@ -29,9 +29,16 @@
    }
 }
 
+- (void) showAnnotations
+{
+   for (id <MKAnnotation> an in theMapView.annotations)
+      [theMapView viewForAnnotation:an].hidden = NO;   
+}
+
 - (void) hideAnnotations
 {
-   [theMapView removeAnnotations:theMapView.annotations];
+   for (id <MKAnnotation> an in theMapView.annotations)
+      [theMapView viewForAnnotation:an].hidden = YES;
 }
 
 - (void) showHourLayers
@@ -70,7 +77,7 @@
    
    [segmentedControl addTarget:self action:@selector(modeSwitched) forControlEvents:UIControlEventValueChanged];
 
-   [self showAnnotations];
+   [self loadAnnotations];
 }
 
 - (void) viewDidAppear:(BOOL)animated
@@ -194,6 +201,8 @@
 - (void) removeAnnotation:(NSNotification *)notification
 {
    id <MKAnnotation> annotation = [[notification userInfo] objectForKey:@"annotation"];
+   WHAnnotationView *av = (WHAnnotationView *)[theMapView viewForAnnotation:annotation];
+   [av stop];
    [theMapView removeAnnotation:annotation];
    WHAppDelegate *appDelegate = (WHAppDelegate *)[UIApplication sharedApplication].delegate;
    [appDelegate removeLocation:annotation.coordinate];

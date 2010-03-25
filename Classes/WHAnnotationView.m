@@ -24,6 +24,13 @@
    return self;
 }
 
+- (void) dealloc
+{
+   NSLog(@"WHAnnotationLeftCalloutView dealloc");
+   [mapView release];
+   [super dealloc];
+}
+   
 - (void) setupGestureRecognizer:(WHTimeAnnotation *)annotation
 {
    WHAnnotationGestureRecognizer *gr = [[WHAnnotationGestureRecognizer alloc] initWithTarget:nil action:nil];
@@ -58,9 +65,15 @@
    return self;
 }
 
+- (void) dealloc
+{
+   NSLog(@"WHAnnotationRightCalloutView dealloc");
+   [annotation release];
+   [super dealloc];
+}
+
 - (void) tapped
 {
-   NSLog(@"tapped");
    [[NSNotificationCenter defaultCenter] postNotificationName:@"removeAnnotation" object:nil userInfo:[NSDictionary dictionaryWithObject:annotation forKey:@"annotation"]];
 }
 
@@ -68,7 +81,7 @@
 
 @implementation WHAnnotationView
 
-@synthesize hour, minute, frequency, working, mapView;
+@synthesize hour, minute, frequency, working, mapView, calculatingDifference;
 
 static NSArray *s_colors = nil;
 
@@ -116,8 +129,20 @@ static NSArray *s_colors = nil;
       self.frame = CGRectMake(0, 0, 48, 48);
       state = STATE_INITIAL;
       self.canShowCallout = YES;
+      calculatingDifference = NO;
    }
    return self;
+}
+
+- (void)prepareForReuse
+{
+   [self.leftCalloutAccessoryView release];
+   self.leftCalloutAccessoryView = nil;
+   [self.rightCalloutAccessoryView release];
+   self.rightCalloutAccessoryView = nil;
+    
+   if (working)
+      [self stop];
 }
 
 - (void) setupCalloutView
@@ -189,6 +214,7 @@ static NSArray *s_colors = nil;
 
 - (void) updateTime
 {
+   NSLog(@"updateTime:%02d:%02d", hour, minute);
    if (++minute >= 60) {
       minute = 0;
       if (++hour >= 24)
@@ -214,10 +240,8 @@ static NSArray *s_colors = nil;
 
 - (void) annotationTapped:(WHAnnotationGestureRecognizer *)recognizer
 {
-   if (state == STATE_INITIAL) {
+   if (state == STATE_INITIAL)
       [self setSelected:YES animated:YES];
-   } else {
-   }
 }
 
 @end

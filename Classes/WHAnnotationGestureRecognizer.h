@@ -14,14 +14,14 @@
    WHTimeAnnotation *annotation;
    MKMapView *mapView;
    UIView *rootView;
+   OverlayLayer *overlayLayer;
    CGPoint srcLocation, dstLocation;
    BOOL touching;
-   OverlayLayer *overlayLayer;
 }
 
 - (void) setupOverlayLayer;
 
-@property (nonatomic, assign) WHTimeAnnotation *annotation;
+@property (nonatomic, retain) WHTimeAnnotation *annotation;
 @property (nonatomic, retain) MKMapView *mapView;
 @property (nonatomic, retain) UIView *rootView;
 

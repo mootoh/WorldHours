@@ -5,6 +5,7 @@
 
 #import "WHAnnotationGestureRecognizer.h"
 #import "WHTimeAnnotation.h"
+#import "WHAnnotationView.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface OverlayLayer : CALayer
@@ -34,17 +35,16 @@
 
 - (void)drawInContext:(CGContextRef)ctx
 {
-   NSLog(@"src = %f, %f, dst = %f, %f",
-         srcLocation.x, srcLocation.y, dstLocation.x, dstLocation.y);
-   CGContextSetStrokeColorWithColor(ctx, [[UIColor colorWithWhite:0.75 alpha:0.8] CGColor]);
-   CGContextSetLineWidth(ctx, 3.0);
+//   NSLog(@"src = %f, %f, dst = %f, %f", srcLocation.x, srcLocation.y, dstLocation.x, dstLocation.y);
+   CGContextSetStrokeColorWithColor(ctx, [[UIColor colorWithWhite:0.1 alpha:0.8] CGColor]);
+   CGContextSetLineWidth(ctx, 2.0);
    CGContextMoveToPoint(ctx, srcLocation.x, srcLocation.y);
    CGContextAddLineToPoint(ctx, dstLocation.x, dstLocation.y);
    CGContextStrokePath(ctx);
    
    if (difference != INVALID_DIFFERENCE) {
       // draw difference text
-      CGContextSetFillColorWithColor(ctx, [[UIColor whiteColor] CGColor]);
+      CGContextSetFillColorWithColor(ctx, [[UIColor blackColor] CGColor]);
       CGContextSelectFont(ctx, "Helvetica", 24.0, kCGEncodingMacRoman);
       CGContextSetTextMatrix(ctx, CGAffineTransformMakeScale(1.0, -1.0));
 
@@ -71,7 +71,10 @@
 
 - (void) dealloc
 {
+   [annotation release];
    [overlayLayer release];
+   [mapView release];
+   [rootView release];
    [super dealloc];
 }
 
@@ -80,7 +83,7 @@
    overlayLayer = [[OverlayLayer alloc] init];
 //   overlayLayer.frame = rootView.frame;
    overlayLayer.frame = CGRectMake(0, 0, 1024, 1024); // TODO: ad-hoc
-   overlayLayer.backgroundColor = [[UIColor colorWithWhite:0.1 alpha:0.5] CGColor];
+//   overlayLayer.backgroundColor = [[UIColor colorWithWhite:0.1 alpha:0.5] CGColor];
    //   overlayLayer.opaque = 0.5;
 }   
 
@@ -88,6 +91,15 @@
 {
    srcLocation = [[touches anyObject] locationInView:rootView];
    NSLog(@"touchesBegin : (%f, %f)", srcLocation.x, srcLocation.y);
+
+   UIView *view = [mapView viewForAnnotation:annotation];
+   CGRect fromRect = view.frame;
+   CGPoint fromCenter = view.center;
+   CGSize toSize = CGSizeMake(fromRect.size.width * 1.5, fromRect.size.height * 1.5);
+   CGRect toRect = CGRectMake(fromCenter.x-toSize.width/2, fromCenter.y-toSize.height/2, toSize.width, toSize.height);
+   [UIView beginAnimations:@"beginAnnotationTouch" context:nil];
+   view.frame = toRect;
+   [UIView commitAnimations];
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
@@ -98,7 +110,7 @@
    }
 
    dstLocation = [[touches anyObject] locationInView:rootView];
-   NSLog(@"touchesMoved : (%f, %f)", dstLocation.x, dstLocation.y);
+//   NSLog(@"touchesMoved : (%f, %f)", dstLocation.x, dstLocation.y);
 
    // draw an arrow
    overlayLayer.srcLocation = srcLocation;
@@ -107,7 +119,9 @@
    BOOL found = NO;
    // if other annotation is here
    for (WHTimeAnnotation *an in [mapView annotations]) {
-      MKAnnotationView *av = [mapView viewForAnnotation:an];
+      if (an == annotation) continue;
+      
+      WHAnnotationView *av = (WHAnnotationView *)[mapView viewForAnnotation:an];
       CGPoint annotationPoint = [mapView convertCoordinate:an.coordinate toPointToView:mapView];
       CGRect boundingBox = CGRectMake(annotationPoint.x - av.frame.size.width/2,
                                       annotationPoint.y - av.frame.size.height/2,
@@ -116,8 +130,33 @@
          // calculate the time difference
          NSLog(@"src time = %d, dst time = %d, time difference = %d", [annotation hour], [an hour], [annotation hour] - [an hour]);
          overlayLayer.difference = [annotation hour] - [an hour];
+         
+         if (! av.calculatingDifference) {
+            
+            CGRect fromRect = av.frame;
+            CGPoint fromCenter = av.center;
+            CGSize toSize = CGSizeMake(fromRect.size.width * 1.5, fromRect.size.height * 1.5);
+            CGRect toRect = CGRectMake(fromCenter.x-toSize.width/2, fromCenter.y-toSize.height/2, toSize.width, toSize.height);
+            [UIView beginAnimations:@"beginAnnotationTouch" context:nil];
+            av.frame = toRect;
+            [UIView commitAnimations];
+            av.calculatingDifference = YES;
+         }
          found = YES;
          break;
+      } else {
+         if (av.calculatingDifference) {
+            // scale down
+            
+            CGPoint fromCenter = av.center;
+            CGSize toSize = CGSizeMake(48, 48);
+            CGRect toRect = CGRectMake(fromCenter.x-toSize.width/2, fromCenter.y-toSize.height/2, toSize.width, toSize.height);
+            [UIView beginAnimations:@"endedAnnotationTouch" context:nil];
+            av.frame = toRect;
+            [UIView commitAnimations];
+
+            av.calculatingDifference = NO;
+         }
       }
    }
    if (! found)
@@ -132,21 +171,33 @@
    touching = NO;
    // revert to the normal view
    [overlayLayer removeFromSuperlayer];
-}
 
+   UIView *view = [mapView viewForAnnotation:annotation];
+//   CGRect fromRect = view.frame;
+   CGPoint fromCenter = view.center;
+   CGSize toSize = CGSizeMake(48, 48);
+   CGRect toRect = CGRectMake(fromCenter.x-toSize.width/2, fromCenter.y-toSize.height/2, toSize.width, toSize.height);
+   [UIView beginAnimations:@"endedAnnotationTouch" context:nil];
+   view.frame = toRect;
+   [UIView commitAnimations];
+}
+/*
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
    NSLog(@"touchesCancelled");
+   [super touchesCancelled:touches withEvent:event];
 }
 
 - (void)reset
 {
    NSLog(@"reset");
+   [super reset];
 }
 
 - (void)ignoreTouch:(UITouch *)touch forEvent:(UIEvent *)event
 {
    NSLog(@"ignoreTouch");
+   [super ignoreTouch:touch forEvent:event];
 }
 
 - (BOOL)canBePreventedByGestureRecognizer:(UIGestureRecognizer *)preventingGestureRecognizer
@@ -160,5 +211,5 @@
    NSLog(@"canPreventGestureRecognizer");
    return NO;
 }
-
+*/
 @end

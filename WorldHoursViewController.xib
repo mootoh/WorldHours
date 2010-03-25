@@ -54,7 +54,7 @@
 					<object class="IBUIButton" id="438172408">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{986, 19}, {18, 19}}</string>
+						<string key="NSFrame">{{986, 709}, {18, 19}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -83,16 +83,17 @@
 					<object class="IBUISegmentedControl" id="550810144">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{824, 685}, {180, 44}}</string>
+						<string key="NSFrame">{{824, 20}, {180, 30}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+						<int key="IBSegmentControlStyle">2</int>
 						<int key="IBNumberOfSegments">2</int>
 						<int key="IBSelectedSegmentIndex">0</int>
 						<object class="NSArray" key="IBSegmentTitles">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>Map</string>
-							<string>Satellite</string>
+							<string>Difference</string>
+							<string>World</string>
 						</object>
 						<object class="NSMutableArray" key="IBSegmentWidths">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -199,8 +200,8 @@
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="520699934"/>
-							<reference ref="550810144"/>
 							<reference ref="438172408"/>
+							<reference ref="550810144"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
