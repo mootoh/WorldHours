@@ -26,7 +26,7 @@
 
 - (void) dealloc
 {
-   NSLog(@"WHAnnotationLeftCalloutView dealloc");
+   LOG(@"WHAnnotationLeftCalloutView dealloc");
    [mapView release];
    [super dealloc];
 }
@@ -67,7 +67,7 @@
 
 - (void) dealloc
 {
-   NSLog(@"WHAnnotationRightCalloutView dealloc");
+   LOG(@"WHAnnotationRightCalloutView dealloc");
    [annotation release];
    [super dealloc];
 }
@@ -136,9 +136,9 @@ static NSArray *s_colors = nil;
 
 - (void)prepareForReuse
 {
-   [self.leftCalloutAccessoryView release];
+//   [self.leftCalloutAccessoryView release];
    self.leftCalloutAccessoryView = nil;
-   [self.rightCalloutAccessoryView release];
+//   [self.rightCalloutAccessoryView release];
    self.rightCalloutAccessoryView = nil;
     
    if (working)
@@ -214,7 +214,7 @@ static NSArray *s_colors = nil;
 
 - (void) updateTime
 {
-   NSLog(@"updateTime:%02d:%02d", hour, minute);
+   LOG(@"updateTime:%02d:%02d", hour, minute);
    if (++minute >= 60) {
       minute = 0;
       if (++hour >= 24)

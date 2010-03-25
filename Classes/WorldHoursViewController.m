@@ -16,6 +16,7 @@
 #import "WHAnnotationGestureRecognizer.h"
 
 @implementation WorldHoursViewController
+@synthesize segmentedControl, annotations;
 
 - (void) loadAnnotations
 {
@@ -25,20 +26,19 @@
       sscanf([loc UTF8String], "%f %f", &lat, &lon);
       CLLocationCoordinate2D coord = {lat, lon};
       WHTimeAnnotation *annotation = [[WHTimeAnnotation alloc] initWithCoordinate:coord];
+      [annotations addObject:annotation];
       [annotation search];
    }
 }
 
 - (void) showAnnotations
 {
-   for (id <MKAnnotation> an in theMapView.annotations)
-      [theMapView viewForAnnotation:an].hidden = NO;   
+   [theMapView addAnnotations:annotations];
 }
 
 - (void) hideAnnotations
 {
-   for (id <MKAnnotation> an in theMapView.annotations)
-      [theMapView viewForAnnotation:an].hidden = YES;
+   [theMapView removeAnnotations:annotations];
 }
 
 - (void) showHourLayers
@@ -62,7 +62,9 @@
 - (void)viewDidLoad
 {
    [super viewDidLoad];
+   
    hourLayers = [[NSMutableArray alloc] init];
+   annotations = [[NSMutableArray alloc] init];
 
    MKCoordinateRegion nextCenter = {{40, 0}, {150, 360}};
    theMapView.region = nextCenter;
@@ -78,12 +80,17 @@
    [segmentedControl addTarget:self action:@selector(modeSwitched) forControlEvents:UIControlEventValueChanged];
 
    [self loadAnnotations];
+   [self showHourLayers];
+
+   NSInteger mapMode = [[NSUserDefaults standardUserDefaults] integerForKey:@"mapMode"];
+   segmentedControl.selectedSegmentIndex = mapMode;
+   
+   [self modeSwitched];
 }
 
 - (void) viewDidAppear:(BOOL)animated
 {
-   [self performSelector:@selector(showHourLayers) withObject:nil afterDelay:0.1f];
-   [self modeSwitched];
+   //   [self performSelector:@selector(showHourLayers) withObject:nil afterDelay:0.1f];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -98,6 +105,7 @@
 
 - (void)dealloc
 {
+   [annotations release];
    [hourLayers release];
    [super dealloc];
 }
@@ -105,9 +113,9 @@
 - (void) parseFinished:(NSNotification *)notification
 {
    WHTimeAnnotation *annotation = [[notification userInfo] objectForKey:@"annotation"];
-   if (![annotation.title isEqualToString:@""]) {
-      [theMapView addAnnotation:annotation];
-   }
+   if (! [annotation.title isEqualToString:@""])
+      [[NSNotificationCenter defaultCenter] postNotificationName:@"parseFinishedOnSuccess" object:nil userInfo:[NSDictionary dictionaryWithObject:annotation forKey:@"annotation"]];
+
    [annotation release];
 }
 
@@ -156,14 +164,16 @@
 {
    id <MKAnnotation> annotation = [[theMapView annotations] lastObject];
    [theMapView selectAnnotation:annotation animated:YES];
-   WHAppDelegate *appDelegate = (WHAppDelegate *)[UIApplication sharedApplication].delegate;
-   [appDelegate addLocation:annotation.coordinate];
+//   WHAppDelegate *appDelegate = (WHAppDelegate *)[UIApplication sharedApplication].delegate;
+//   [appDelegate addLocation:annotation.coordinate];
 }
 
 #pragma mark UIGestureRecognizerDelegate
 
 - (void) mapTapped:(UITapGestureRecognizer *)recognizer
 {
+   if (segmentedControl.selectedSegmentIndex == 1) return;
+
    CGPoint point = [recognizer locationInView:theMapView];
    for (id <MKAnnotation> annotation in [theMapView annotations]) {
       // include the point?
@@ -173,14 +183,24 @@
                                       annotationPoint.y - av.frame.size.height/2,
                                       av.frame.size.width, av.frame.size.height);
       if (CGRectContainsPoint(boundingBox, point)) {
-         NSLog(@"point included");
+         LOG(@"point included");
          [theMapView selectAnnotation:annotation animated:YES];
          return;
       }
    }
    CLLocationCoordinate2D coord = [theMapView convertPoint:point toCoordinateFromView:self.view];
    WHTimeAnnotation *annotation = [[WHTimeAnnotation alloc] initWithCoordinate:coord];
+   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addAnnotationIfSuccess:) name:@"parseFinishedOnSuccess" object:nil];
    [annotation search];
+}
+
+- (void) addAnnotationIfSuccess:(NSNotification *)notification
+{
+   WHTimeAnnotation *annotation = [[notification userInfo] objectForKey:@"annotation"];
+   [[NSNotificationCenter defaultCenter] removeObserver:self name:@"parseFinishedOnSuccess" object:nil];
+   if ([annotation.title isEqualToString:@""]) return;
+   [theMapView addAnnotation:annotation];
+   [annotations addObject:annotation];
 }
 
 - (void) modeSwitched
@@ -204,8 +224,7 @@
    WHAnnotationView *av = (WHAnnotationView *)[theMapView viewForAnnotation:annotation];
    [av stop];
    [theMapView removeAnnotation:annotation];
-   WHAppDelegate *appDelegate = (WHAppDelegate *)[UIApplication sharedApplication].delegate;
-   [appDelegate removeLocation:annotation.coordinate];
+   [annotations removeObject:annotation];
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation

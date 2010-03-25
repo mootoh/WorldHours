@@ -57,6 +57,7 @@
 		928F7071115B4A4E002075D4 /* WHAnnotationGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WHAnnotationGestureRecognizer.h; sourceTree = "<group>"; };
 		928F7072115B4A4E002075D4 /* WHAnnotationGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHAnnotationGestureRecognizer.m; sourceTree = "<group>"; };
 		92A679C21155059400591E0E /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		92B0706F115BD3BD005D47E1 /* logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = logger.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +116,7 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
+				92B0706F115BD3BD005D47E1 /* logger.h */,
 				920D6E9F11599C0400A0DE3F /* Reachability.h */,
 				920D6EA011599C0400A0DE3F /* Reachability.m */,
 				32CA4F630368D1EE00C91783 /* WorldHours_Prefix.pch */,

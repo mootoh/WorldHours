@@ -35,7 +35,7 @@
 
 - (void)drawInContext:(CGContextRef)ctx
 {
-//   NSLog(@"src = %f, %f, dst = %f, %f", srcLocation.x, srcLocation.y, dstLocation.x, dstLocation.y);
+//   LOG(@"src = %f, %f, dst = %f, %f", srcLocation.x, srcLocation.y, dstLocation.x, dstLocation.y);
    CGContextSetStrokeColorWithColor(ctx, [[UIColor colorWithWhite:0.1 alpha:0.8] CGColor]);
    CGContextSetLineWidth(ctx, 2.0);
    CGContextMoveToPoint(ctx, srcLocation.x, srcLocation.y);
@@ -90,7 +90,7 @@
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
    srcLocation = [[touches anyObject] locationInView:rootView];
-   NSLog(@"touchesBegin : (%f, %f)", srcLocation.x, srcLocation.y);
+   LOG(@"touchesBegin : (%f, %f)", srcLocation.x, srcLocation.y);
 
    UIView *view = [mapView viewForAnnotation:annotation];
    CGRect fromRect = view.frame;
@@ -110,7 +110,7 @@
    }
 
    dstLocation = [[touches anyObject] locationInView:rootView];
-//   NSLog(@"touchesMoved : (%f, %f)", dstLocation.x, dstLocation.y);
+//   LOG(@"touchesMoved : (%f, %f)", dstLocation.x, dstLocation.y);
 
    // draw an arrow
    overlayLayer.srcLocation = srcLocation;
@@ -128,7 +128,7 @@
                                       av.frame.size.width, av.frame.size.height);
       if (CGRectContainsPoint(boundingBox, dstLocation)) {
          // calculate the time difference
-         NSLog(@"src time = %d, dst time = %d, time difference = %d", [annotation hour], [an hour], [annotation hour] - [an hour]);
+         LOG(@"src time = %d, dst time = %d, time difference = %d", [annotation hour], [an hour], [annotation hour] - [an hour]);
          overlayLayer.difference = [annotation hour] - [an hour];
          
          if (! av.calculatingDifference) {
@@ -167,7 +167,7 @@
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-   NSLog(@"touchesEnded");
+   LOG(@"touchesEnded");
    touching = NO;
    // revert to the normal view
    [overlayLayer removeFromSuperlayer];
@@ -184,31 +184,31 @@
 /*
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
-   NSLog(@"touchesCancelled");
+   LOG(@"touchesCancelled");
    [super touchesCancelled:touches withEvent:event];
 }
 
 - (void)reset
 {
-   NSLog(@"reset");
+   LOG(@"reset");
    [super reset];
 }
 
 - (void)ignoreTouch:(UITouch *)touch forEvent:(UIEvent *)event
 {
-   NSLog(@"ignoreTouch");
+   LOG(@"ignoreTouch");
    [super ignoreTouch:touch forEvent:event];
 }
 
 - (BOOL)canBePreventedByGestureRecognizer:(UIGestureRecognizer *)preventingGestureRecognizer
 {
-   NSLog(@"canBePreventedByGestureRecognizer");
+   LOG(@"canBePreventedByGestureRecognizer");
    return NO;
 }
 
 - (BOOL)canPreventGestureRecognizer:(UIGestureRecognizer *)preventedGestureRecognizer
 {
-   NSLog(@"canPreventGestureRecognizer");
+   LOG(@"canPreventGestureRecognizer");
    return NO;
 }
 */

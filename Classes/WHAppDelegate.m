@@ -9,6 +9,7 @@
 #import "WHAppDelegate.h"
 #import "WorldHoursViewController.h"
 #import "Reachability.h"
+#import "WHTimeAnnotation.h"
 
 @implementation WHAppDelegate
 
@@ -32,8 +33,18 @@
 
 - (void) applicationWillTerminate:(UIApplication *)application
 {
+   NSMutableSet *locs = [NSMutableSet set];
+   for (WHTimeAnnotation *annotation in viewController.annotations) {
+      CLLocationCoordinate2D location = annotation.coordinate;
+      NSString *locationString = [NSString stringWithFormat:@"%.5f %.5f",
+                                  location.latitude, location.longitude];
+      [locs addObject:locationString];
+   }
+   
    // write back the annotations
-   [[NSUserDefaults standardUserDefaults] setObject:[locations allObjects] forKey:@"locations"];
+   [[NSUserDefaults standardUserDefaults] setObject:[locs allObjects] forKey:@"locations"];
+   
+   [[NSUserDefaults standardUserDefaults] setInteger:viewController.segmentedControl.selectedSegmentIndex forKey:@"mapMode"];
 }
 
 - (void)dealloc

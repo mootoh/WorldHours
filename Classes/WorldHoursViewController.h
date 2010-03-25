@@ -14,7 +14,11 @@
    IBOutlet MKMapView *theMapView;
    NSMutableArray *hourLayers;
    IBOutlet UISegmentedControl *segmentedControl;
+   NSMutableArray *annotations;
 }
+
+@property (nonatomic, readonly) UISegmentedControl *segmentedControl;
+@property (nonatomic, readonly) NSMutableArray *annotations;
 
 - (IBAction) showMore;
 - (void) modeSwitched;
