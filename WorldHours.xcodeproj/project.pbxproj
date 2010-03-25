@@ -19,6 +19,9 @@
 		920CFB671157849C00ABDE44 /* WHMoreViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 920CFB651157849C00ABDE44 /* WHMoreViewController.xib */; };
 		920D6EA111599C0400A0DE3F /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 920D6EA011599C0400A0DE3F /* Reachability.m */; };
 		920D6EC711599D2700A0DE3F /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 920D6EC611599D2700A0DE3F /* SystemConfiguration.framework */; };
+		9277110C115BE9A600DF2896 /* icon_48x48.png in Resources */ = {isa = PBXBuildFile; fileRef = 92771109115BE9A600DF2896 /* icon_48x48.png */; };
+		9277110D115BE9A600DF2896 /* icon_72x72.png in Resources */ = {isa = PBXBuildFile; fileRef = 9277110A115BE9A600DF2896 /* icon_72x72.png */; };
+		9277110E115BE9A600DF2896 /* icon_512x512.png in Resources */ = {isa = PBXBuildFile; fileRef = 9277110B115BE9A600DF2896 /* icon_512x512.png */; };
 		928D76D1115714CF00FC57B1 /* WHTimeAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 928D76D0115714CF00FC57B1 /* WHTimeAnnotation.m */; };
 		928D774911571BC600FC57B1 /* WHHourLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 928D774811571BC600FC57B1 /* WHHourLayer.m */; };
 		928D774F11571BEF00FC57B1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 928D774E11571BEF00FC57B1 /* QuartzCore.framework */; };
@@ -33,7 +36,7 @@
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623240D0F684500981E51 /* WHAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WHAppDelegate.h; sourceTree = "<group>"; };
 		1D3623250D0F684500981E51 /* WHAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHAppDelegate.m; sourceTree = "<group>"; };
-		1D6058910D05DD3D006BFB54 /* WorldHours.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WorldHours.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1D6058910D05DD3D006BFB54 /* Jisa.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Jisa.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		288765A40DF7441C002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		2899E5210DE3E06400AC0155 /* WorldHoursViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WorldHoursViewController.xib; sourceTree = "<group>"; };
@@ -49,6 +52,9 @@
 		920D6E9F11599C0400A0DE3F /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		920D6EA011599C0400A0DE3F /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		920D6EC611599D2700A0DE3F /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		92771109115BE9A600DF2896 /* icon_48x48.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_48x48.png; sourceTree = "<group>"; };
+		9277110A115BE9A600DF2896 /* icon_72x72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_72x72.png; sourceTree = "<group>"; };
+		9277110B115BE9A600DF2896 /* icon_512x512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_512x512.png; sourceTree = "<group>"; };
 		928D76CF115714CF00FC57B1 /* WHTimeAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WHTimeAnnotation.h; sourceTree = "<group>"; };
 		928D76D0115714CF00FC57B1 /* WHTimeAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHTimeAnnotation.m; sourceTree = "<group>"; };
 		928D774711571BC600FC57B1 /* WHHourLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WHHourLayer.h; sourceTree = "<group>"; };
@@ -100,7 +106,7 @@
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1D6058910D05DD3D006BFB54 /* WorldHours.app */,
+				1D6058910D05DD3D006BFB54 /* Jisa.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -132,6 +138,9 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				92771109115BE9A600DF2896 /* icon_48x48.png */,
+				9277110A115BE9A600DF2896 /* icon_72x72.png */,
+				9277110B115BE9A600DF2896 /* icon_512x512.png */,
 				92B070DE115BDCE6005D47E1 /* arrowButton.png */,
 				92B070B1115BD8FF005D47E1 /* closeButton.png */,
 				2899E5210DE3E06400AC0155 /* WorldHoursViewController.xib */,
@@ -185,7 +194,7 @@
 			);
 			name = WorldHours;
 			productName = WorldHours;
-			productReference = 1D6058910D05DD3D006BFB54 /* WorldHours.app */;
+			productReference = 1D6058910D05DD3D006BFB54 /* Jisa.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -215,6 +224,9 @@
 				920CFB671157849C00ABDE44 /* WHMoreViewController.xib in Resources */,
 				92B070B2115BD8FF005D47E1 /* closeButton.png in Resources */,
 				92B070DF115BDCE6005D47E1 /* arrowButton.png in Resources */,
+				9277110C115BE9A600DF2896 /* icon_48x48.png in Resources */,
+				9277110D115BE9A600DF2896 /* icon_72x72.png in Resources */,
+				9277110E115BE9A600DF2896 /* icon_512x512.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -258,11 +270,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Motohiro Takayama";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = WorldHours_Prefix.pch;
 				INFOPLIST_FILE = "WorldHours-Info.plist";
-				PRODUCT_NAME = WorldHours;
+				PRODUCT_NAME = Jisa;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "EC061FA4-4F6B-46B7-AEFB-C131519FDFAB";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
