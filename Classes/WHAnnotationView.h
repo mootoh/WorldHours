@@ -11,7 +11,7 @@
 
 @class WHTimeAnnotation;
 
-@interface WHAnnotationCalloutView : UIView
+@interface WHAnnotationLeftCalloutView : UIView
 {
    MKMapView *mapView;
 }
@@ -21,6 +21,16 @@
 - (void) setupGestureRecognizer:(WHTimeAnnotation *)annotation;
 
 @end
+
+@interface WHAnnotationRightCalloutView : UIView
+{
+   WHTimeAnnotation *annotation;
+}
+
+@property (nonatomic, retain) WHTimeAnnotation *annotation;
+
+@end
+
 
 @interface WHAnnotationView : MKAnnotationView <UIGestureRecognizerDelegate>
 {

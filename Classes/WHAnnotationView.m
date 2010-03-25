@@ -13,7 +13,7 @@
 #import "WHAnnotationGestureRecognizer.h"
 #import "WHTimeAnnotation.h"
 
-@implementation WHAnnotationCalloutView
+@implementation WHAnnotationLeftCalloutView
 @synthesize mapView;
 
 - (id) initWithFrame:(CGRect)frame
@@ -38,7 +38,29 @@
 
 - (void) drawRect:(CGRect)rect
 {
-   CGContextRef context = UIGraphicsGetCurrentContext();   
+//   CGContextRef context = UIGraphicsGetCurrentContext();   
+}
+
+@end
+
+@implementation WHAnnotationRightCalloutView
+@synthesize annotation;
+
+- (id) initWithFrame:(CGRect)frame
+{
+   if (self = [super initWithFrame:frame]) {
+      self.backgroundColor = [UIColor redColor];
+      UITapGestureRecognizer *gr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped)];
+      [self addGestureRecognizer:gr];
+      [gr release];
+   }
+   return self;
+}
+
+- (void) tapped
+{
+   NSLog(@"tapped");
+   [[NSNotificationCenter defaultCenter] postNotificationName:@"removeAnnotation" object:nil userInfo:[NSDictionary dictionaryWithObject:annotation forKey:@"annotation"]];
 }
 
 @end
@@ -99,11 +121,16 @@ static NSArray *s_colors = nil;
 
 - (void) setupCalloutView
 {   
-   WHAnnotationCalloutView *calloutView = [[WHAnnotationCalloutView alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
-   calloutView.mapView = mapView;
-   [calloutView setupGestureRecognizer:self.annotation];
-   self.leftCalloutAccessoryView = calloutView;
-   [calloutView release];
+   WHAnnotationLeftCalloutView *leftCalloutView = [[WHAnnotationLeftCalloutView alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
+   leftCalloutView.mapView = mapView;
+   [leftCalloutView setupGestureRecognizer:self.annotation];
+   self.leftCalloutAccessoryView = leftCalloutView;
+   [leftCalloutView release];
+
+   WHAnnotationRightCalloutView *rightCalloutView = [[WHAnnotationRightCalloutView alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
+   rightCalloutView.annotation = self.annotation;
+   self.rightCalloutAccessoryView = rightCalloutView;
+   [rightCalloutView release];
 }
 
 - (void)drawRect:(CGRect)rect
@@ -189,9 +216,6 @@ static NSArray *s_colors = nil;
    if (state == STATE_INITIAL) {
       [self setSelected:YES animated:YES];
    } else {
-//      [theMapView removeAnnotation:recognizer.annotation];
-//      WHAppDelegate *appDelegate = (WHAppDelegate *)[UIApplication sharedApplication].delegate;
-//      [appDelegate removeLocation:recognizer.annotation.coordinate];
    }
 }
 

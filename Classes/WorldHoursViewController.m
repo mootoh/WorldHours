@@ -46,6 +46,7 @@
    theMapView.region = nextCenter;
    
    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(parseFinished:) name:@"parseFinished" object:nil];
+   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeAnnotation:) name:@"removeAnnotation" object:nil];
    
    UITapGestureRecognizer *tapGR = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(mapTapped:)];
    [theMapView addGestureRecognizer:tapGR];
@@ -189,6 +190,14 @@
       theMapView.mapType = MKMapTypeStandard;
    else
       theMapView.mapType = MKMapTypeSatellite;
+}
+
+- (void) removeAnnotation:(NSNotification *)notification
+{
+   id <MKAnnotation> annotation = [[notification userInfo] objectForKey:@"annotation"];
+   [theMapView removeAnnotation:annotation];
+   WHAppDelegate *appDelegate = (WHAppDelegate *)[UIApplication sharedApplication].delegate;
+   [appDelegate removeLocation:annotation.coordinate];
 }
 
 @end
