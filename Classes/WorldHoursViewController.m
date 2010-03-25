@@ -17,6 +17,23 @@
 
 @implementation WorldHoursViewController
 
+- (void) showAnnotations
+{
+   WHAppDelegate *appDelegate = (WHAppDelegate *)[UIApplication sharedApplication].delegate;
+   for (NSString *loc in appDelegate.locations) {
+      CGFloat lat, lon;
+      sscanf([loc UTF8String], "%f %f", &lat, &lon);
+      CLLocationCoordinate2D coord = {lat, lon};
+      WHTimeAnnotation *annotation = [[WHTimeAnnotation alloc] initWithCoordinate:coord];
+      [annotation search];
+   }
+}
+
+- (void) hideAnnotations
+{
+   [theMapView removeAnnotations:theMapView.annotations];
+}
+
 - (void) showHourLayers
 {
    NSCalendar *calendar = [NSCalendar currentCalendar];
@@ -30,9 +47,7 @@
       layer.location = loc;
       layer.hour = (hour + i) % 24;
       [layer update:theMapView forView:self.view];
-      [theMapView.layer addSublayer:layer];
       [hourLayers addObject:layer];
-      [layer setNeedsDisplay];
       [layer release];
    }
 }
@@ -55,19 +70,13 @@
    
    [segmentedControl addTarget:self action:@selector(modeSwitched) forControlEvents:UIControlEventValueChanged];
 
-   WHAppDelegate *appDelegate = (WHAppDelegate *)[UIApplication sharedApplication].delegate;
-   for (NSString *loc in appDelegate.locations) {
-      CGFloat lat, lon;
-      sscanf([loc UTF8String], "%f %f", &lat, &lon);
-      CLLocationCoordinate2D coord = {lat, lon};
-      WHTimeAnnotation *annotation = [[WHTimeAnnotation alloc] initWithCoordinate:coord];
-      [annotation search];
-   }
+   [self showAnnotations];
 }
 
 - (void) viewDidAppear:(BOOL)animated
 {
    [self performSelector:@selector(showHourLayers) withObject:nil afterDelay:0.1f];
+   [self modeSwitched];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -169,10 +178,17 @@
 
 - (void) modeSwitched
 {
-   if (segmentedControl.selectedSegmentIndex == 0)
+   if (segmentedControl.selectedSegmentIndex == 0) {
       theMapView.mapType = MKMapTypeStandard;
-   else
+      for (WHHourLayer *layer in hourLayers)
+         [layer removeFromSuperlayer];
+      [self showAnnotations];
+   } else {
       theMapView.mapType = MKMapTypeSatellite;
+      for (WHHourLayer *layer in hourLayers)
+         [theMapView.layer addSublayer:layer];
+      [self hideAnnotations];
+   }
 }
 
 - (void) removeAnnotation:(NSNotification *)notification

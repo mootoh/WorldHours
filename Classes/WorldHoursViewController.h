@@ -17,5 +17,6 @@
 }
 
 - (IBAction) showMore;
+- (void) modeSwitched;
 
 @end

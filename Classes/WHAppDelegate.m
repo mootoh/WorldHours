@@ -70,8 +70,4 @@
       [locations removeObject:target];
 }
 
-- (void)alertViewCancel:(UIAlertView *)alertView
-{
-}
-
 @end
