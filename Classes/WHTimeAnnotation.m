@@ -11,6 +11,7 @@
 @implementation WHTimeAnnotation
 @synthesize coordinate;
 @synthesize timezoneId;
+@synthesize gmtOffset;
 
 // thanks to http://www.geonames.org/export/web-services.html#timezone
 #define kTimeZoneWebServiceURL @"http://ws.geonames.org/timezone?"
@@ -19,8 +20,11 @@
 {
    if (self = [super init]) {
       coordinate = coord;
-      parsing = NO;
+      state = PARSE_STATE_INITIAL;
       timezoneId = @"";
+      gmtOffsetString = @"";
+      gmtOffset = 0.0;
+
       NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@lat=%f&lng=%f",
                                          kTimeZoneWebServiceURL, coord.latitude, coord.longitude]];
       parser = [[NSXMLParser alloc] initWithContentsOfURL:url];
@@ -37,19 +41,27 @@
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qualifiedName attributes:(NSDictionary *)attributeDict
 {
    if ([elementName isEqualToString:@"timezoneId"])
-      parsing = YES;
+      state = PARSE_STATE_TIMEZONE_ID;
+   else if ([elementName isEqualToString:@"gmtOffset"])
+      state = PARSE_STATE_GMT_OFFSET;
 }
 
 - (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName
 {
    if ([elementName isEqualToString:@"timezoneId"])
-      parsing = NO;
+      state = PARSE_STATE_INITIAL;
+   else if ([elementName isEqualToString:@"gmtOffset"]) {
+      gmtOffset = [gmtOffsetString floatValue];
+      state = PARSE_STATE_INITIAL;
+   }
 }
 
 - (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string
 {
-   if (parsing)
+   if (state == PARSE_STATE_TIMEZONE_ID)
       self.timezoneId = [timezoneId stringByAppendingString:string];
+   else if (state == PARSE_STATE_GMT_OFFSET)
+      gmtOffsetString = [gmtOffsetString stringByAppendingString:string];
 }
 
 - (void) parserDidEndDocument:(NSXMLParser *)parser

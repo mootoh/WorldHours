@@ -13,12 +13,20 @@
 {
    CLLocationCoordinate2D coordinate;
    NSXMLParser *parser;
-   BOOL parsing;
+   enum {
+      PARSE_STATE_INITIAL = 0,
+      PARSE_STATE_TIMEZONE_ID,
+      PARSE_STATE_GMT_OFFSET
+   } state;
+
    NSString *timezoneId;
+   NSString *gmtOffsetString;
+   float gmtOffset;
 }
 
 @property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
 @property (nonatomic, retain) NSString *timezoneId;
+@property (nonatomic, readonly) float gmtOffset;
 
 - (id) initWithCoordinate:(CLLocationCoordinate2D) coord;
 - (void) search;

@@ -50,12 +50,6 @@
       CGContextSelectFont(ctx, "Helvetica", 32.0, kCGEncodingMacRoman);
       CGContextSetTextMatrix(ctx, CGAffineTransformMakeScale(1.0, -1.0));
 
-      if (difference > 12)
-         difference = -(difference-12);
-      if (difference < -12)
-         difference = 12+difference;
-      difference = -difference;
-
       NSString *differenceString = (difference > 0)
          ? [NSString stringWithFormat:@"+%d", difference]
          : [NSString stringWithFormat:@"%d", difference];
@@ -140,7 +134,7 @@
       if (CGRectContainsPoint(boundingBox, dstLocation)) {
          // calculate the time difference
          LOG(@"src time = %d, dst time = %d, time difference = %d", [annotation hour], [an hour], [annotation hour] - [an hour]);
-         overlayLayer.difference = [annotation hour] - [an hour];
+         overlayLayer.difference = annotation.gmtOffset - an.gmtOffset;
          
          if (! av.calculatingDifference) {
             
