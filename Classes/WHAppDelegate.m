@@ -22,6 +22,7 @@
    if ([[Reachability sharedReachability] internetConnectionStatus] == NotReachable) {
       UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"Turn Off Airplane Mode or Use Wi-Fi to Access Data" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
       [alertView show];
+      [alertView release];
       return YES;
    }
    self.locations = [NSMutableSet setWithArray:[[NSUserDefaults standardUserDefaults] arrayForKey:@"locations"]];
@@ -74,8 +75,10 @@
 
    NSString *target = nil;
    for (NSString *str in locations)
-      if ([str isEqualToString:locationString])
-         target = [str copy];
+      if ([str isEqualToString:locationString]) {
+         target = [[str copy] autorelease];
+         break;
+      }
 
    if (target)
       [locations removeObject:target];

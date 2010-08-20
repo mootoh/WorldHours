@@ -28,6 +28,7 @@
       WHTimeAnnotation *annotation = [[WHTimeAnnotation alloc] initWithCoordinate:coord];
       [annotations addObject:annotation];
       [annotation search];
+      [annotation release];
    }
 }
 
@@ -115,8 +116,6 @@
    WHTimeAnnotation *annotation = [[notification userInfo] objectForKey:@"annotation"];
    if (! [annotation.title isEqualToString:@""])
       [[NSNotificationCenter defaultCenter] postNotificationName:@"parseFinishedOnSuccess" object:nil userInfo:[NSDictionary dictionaryWithObject:annotation forKey:@"annotation"]];
-
-   [annotation release];
 }
 
 - (IBAction) showMore
@@ -192,6 +191,7 @@
    WHTimeAnnotation *annotation = [[WHTimeAnnotation alloc] initWithCoordinate:coord];
    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addAnnotationIfSuccess:) name:@"parseFinishedOnSuccess" object:nil];
    [annotation search];
+   [annotation release];
 }
 
 - (void) addAnnotationIfSuccess:(NSNotification *)notification

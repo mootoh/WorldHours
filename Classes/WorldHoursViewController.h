@@ -11,9 +11,9 @@
 
 @interface WorldHoursViewController : UIViewController <MKMapViewDelegate, UIGestureRecognizerDelegate>
 {
-   IBOutlet MKMapView *theMapView;
-   NSMutableArray *hourLayers;
+   IBOutlet MKMapView          *theMapView;
    IBOutlet UISegmentedControl *segmentedControl;
+   NSMutableArray *hourLayers;
    NSMutableArray *annotations;
 }
 
