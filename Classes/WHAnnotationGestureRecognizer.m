@@ -27,15 +27,13 @@
 
 - (id) init
 {
-   if (self = [super init]) {
+   if (self = [super init])
       difference = INVALID_DIFFERENCE;
-   }
    return self;
 }
 
 - (void)drawInContext:(CGContextRef)ctx
 {
-//   LOG(@"src = %f, %f, dst = %f, %f", srcLocation.x, srcLocation.y, dstLocation.x, dstLocation.y);
    CGContextSetStrokeColorWithColor(ctx, [[UIColor colorWithWhite:0.4 alpha:0.8] CGColor]);
    CGContextSetLineWidth(ctx, 2.0);
    CGContextMoveToPoint(ctx, srcLocation.x, srcLocation.y);
@@ -85,15 +83,11 @@
 - (void) setupOverlayLayer
 {
    overlayLayer = [[OverlayLayer alloc] init];
-//   overlayLayer.frame = rootView.frame;
    overlayLayer.frame = CGRectMake(0, 0, 1024, 1024); // TODO: ad-hoc
-//   overlayLayer.backgroundColor = [[UIColor colorWithWhite:0.1 alpha:0.5] CGColor];
-   //   overlayLayer.opaque = 0.5;
 }   
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-//   srcLocation = [[touches anyObject] locationInView:rootView];
    srcLocation = [mapView convertCoordinate:annotation.coordinate toPointToView:rootView];
    LOG(@"touchesBegin : (%f, %f)", srcLocation.x, srcLocation.y);
 
@@ -115,7 +109,6 @@
    }
 
    dstLocation = [[touches anyObject] locationInView:rootView];
-//   LOG(@"touchesMoved : (%f, %f)", dstLocation.x, dstLocation.y);
 
    // draw an arrow
    overlayLayer.srcLocation = srcLocation;
@@ -178,7 +171,6 @@
    [overlayLayer removeFromSuperlayer];
 
    UIView *view = [mapView viewForAnnotation:annotation];
-//   CGRect fromRect = view.frame;
    CGPoint fromCenter = view.center;
    CGSize toSize = CGSizeMake(48, 48);
    CGRect toRect = CGRectMake(fromCenter.x-toSize.width/2, fromCenter.y-toSize.height/2, toSize.width, toSize.height);
@@ -186,35 +178,5 @@
    view.frame = toRect;
    [UIView commitAnimations];
 }
-/*
-- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
-{
-   LOG(@"touchesCancelled");
-   [super touchesCancelled:touches withEvent:event];
-}
 
-- (void)reset
-{
-   LOG(@"reset");
-   [super reset];
-}
-
-- (void)ignoreTouch:(UITouch *)touch forEvent:(UIEvent *)event
-{
-   LOG(@"ignoreTouch");
-   [super ignoreTouch:touch forEvent:event];
-}
-
-- (BOOL)canBePreventedByGestureRecognizer:(UIGestureRecognizer *)preventingGestureRecognizer
-{
-   LOG(@"canBePreventedByGestureRecognizer");
-   return NO;
-}
-
-- (BOOL)canPreventGestureRecognizer:(UIGestureRecognizer *)preventedGestureRecognizer
-{
-   LOG(@"canPreventGestureRecognizer");
-   return NO;
-}
-*/
 @end

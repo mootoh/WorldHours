@@ -158,8 +158,6 @@
 {
    id <MKAnnotation> annotation = [[theMapView annotations] lastObject];
    [theMapView selectAnnotation:annotation animated:YES];
-//   WHAppDelegate *appDelegate = (WHAppDelegate *)[UIApplication sharedApplication].delegate;
-//   [appDelegate addLocation:annotation.coordinate];
 }
 
 #pragma mark UIGestureRecognizerDelegate
@@ -171,11 +169,11 @@
    CGPoint point = [recognizer locationInView:theMapView];
    for (id <MKAnnotation> annotation in [theMapView annotations]) {
       // include the point?
-      MKAnnotationView *av = [theMapView viewForAnnotation:annotation];
+      MKAnnotationView    *av = [theMapView viewForAnnotation:annotation];
       CGPoint annotationPoint = [theMapView convertCoordinate:annotation.coordinate toPointToView:theMapView];
-      CGRect boundingBox = CGRectMake(annotationPoint.x - av.frame.size.width/2,
-                                      annotationPoint.y - av.frame.size.height/2,
-                                      av.frame.size.width, av.frame.size.height);
+      CGRect      boundingBox = CGRectMake(annotationPoint.x - av.frame.size.width/2,
+                                           annotationPoint.y - av.frame.size.height/2,
+                                           av.frame.size.width, av.frame.size.height);
       if (CGRectContainsPoint(boundingBox, point)) {
          LOG(@"point included");
          [theMapView selectAnnotation:annotation animated:YES];

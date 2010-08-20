@@ -47,11 +47,6 @@
    [gr release];
 }
 
-- (void) drawRect:(CGRect)rect
-{
-//   CGContextRef context = UIGraphicsGetCurrentContext();   
-}
-
 @end
 
 @implementation WHAnnotationRightCalloutView

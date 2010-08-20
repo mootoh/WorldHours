@@ -13,7 +13,7 @@
 {
    WHTimeAnnotation *annotation;
    MKMapView *mapView;
-   UIView *rootView;
+   UIView    *rootView;
    OverlayLayer *overlayLayer;
    CGPoint srcLocation, dstLocation;
    BOOL touching;
