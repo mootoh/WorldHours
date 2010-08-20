@@ -1,7 +1,7 @@
 # WorldHours #
 
 Overlook the world hours on iPad.
-on sale at AppStore, caled 'Jisa'.
+on sale at AppStore, named [Jisa](http://itunes.com/app/jisa).
 
 ## LICENSE ##
 
