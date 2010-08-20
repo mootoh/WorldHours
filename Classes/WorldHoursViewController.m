@@ -89,11 +89,6 @@
    [self modeSwitched];
 }
 
-- (void) viewDidAppear:(BOOL)animated
-{
-   //   [self performSelector:@selector(showHourLayers) withObject:nil afterDelay:0.1f];
-}
-
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
    return YES;
